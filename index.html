@@ -6,7 +6,12 @@
 <title>CASPER FX — Live Market Analysis</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    -webkit-tap-highlight-color:transparent
+}
 
 :root{
     --bg:#050814;
@@ -30,7 +35,9 @@ html,body{
     font-family:Arial,Helvetica,sans-serif;
 }
 
-body{overflow-x:hidden}
+body{
+    overflow-x:hidden
+}
 
 .app{
     width:100%;
@@ -119,21 +126,6 @@ body{overflow-x:hidden}
     gap:10px;
     flex-wrap:wrap;
     margin-bottom:25px;
-}
-
-.input{
-    flex:1;
-    min-width:160px;
-    background:var(--card);
-    border:1px solid var(--border);
-    color:#fff;
-    padding:13px 15px;
-    border-radius:10px;
-}
-
-.input:focus{
-    outline:none;
-    border-color:var(--blue);
 }
 
 .btn{
@@ -241,55 +233,57 @@ body{overflow-x:hidden}
     margin-bottom:16px;
 }
 
+.lock-status{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.8px;
+    color:var(--green);
+    text-transform:uppercase;
+}
+
+.lock-status.waiting{
+    color:var(--muted);
+}
+
+.lock-icon{
+    font-size:12px;
+}
+
 .circle{
     position:relative;
     flex-shrink:0;
-    width:88px;
-    height:88px;
+    width:94px;
+    height:94px;
     border-radius:50%;
     display:flex;
     align-items:center;
     justify-content:center;
     font-weight:900;
+    border:2px solid rgba(255,255,255,.08);
 }
 
 .circle .target-icon{
     position:absolute;
-    top:-4px;
-    left:-4px;
-    width:26px;
-    height:26px;
+    top:-5px;
+    left:-5px;
+    width:27px;
+    height:27px;
     border-radius:50%;
     background:#fff;
+    color:#111;
     display:flex;
     align-items:center;
     justify-content:center;
     font-size:14px;
-    box-shadow:0 2px 6px rgba(0,0,0,.4);
-}
-
-.circle span{
-    font-size:11px;
-    font-weight:normal;
-    opacity:.8;
+    box-shadow:0 2px 8px rgba(0,0,0,.5);
 }
 
 .circle b{
-    font-size:34px;
-}
-
-.badge-line{
-    width:70%;
-    height:3px;
-    border-radius:4px;
-    background:var(--border);
-    overflow:hidden;
-}
-
-.badge-line div{
-    height:100%;
-    background:linear-gradient(90deg,var(--blue),var(--purple));
-    transition:width .4s;
+    font-size:36px;
 }
 
 .circle.green{
@@ -310,6 +304,50 @@ body{overflow-x:hidden}
 .circle.orange{
     background:radial-gradient(circle at 30% 30%,#fbbf24,#d97706);
     box-shadow:0 0 30px rgba(251,191,36,.25);
+}
+
+.badge-line{
+    width:70%;
+    height:4px;
+    border-radius:4px;
+    background:var(--border);
+    overflow:hidden;
+}
+
+.badge-line div{
+    height:100%;
+    background:linear-gradient(90deg,var(--blue),var(--purple),var(--pink));
+    transition:width .3s;
+}
+
+.timer-box{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    margin-top:2px;
+}
+
+.timer-label{
+    color:var(--muted);
+    font-size:11px;
+}
+
+.timer{
+    min-width:42px;
+    text-align:center;
+    padding:5px 9px;
+    border-radius:7px;
+    background:var(--card2);
+    border:1px solid var(--border);
+    color:var(--yellow);
+    font-weight:900;
+    font-size:13px;
+}
+
+.timer.refreshing{
+    color:var(--green);
 }
 
 .prediction-info{
@@ -337,6 +375,11 @@ body{overflow-x:hidden}
 .live-digit{
     color:var(--green);
     font-weight:bold;
+}
+
+.locked-digit{
+    color:#a78bfa;
+    font-weight:900;
 }
 
 .progress{
@@ -379,6 +422,22 @@ body{overflow-x:hidden}
     font-size:13px;
 }
 
+.stat.matches{
+    border-color:rgba(16,185,129,.45);
+}
+
+.stat.matches b{
+    color:var(--green);
+}
+
+.stat.differs{
+    border-color:rgba(239,68,68,.35);
+}
+
+.stat.differs b{
+    color:#fca5a5;
+}
+
 .digits{
     display:grid;
     grid-template-columns:repeat(10,1fr);
@@ -404,7 +463,8 @@ body{overflow-x:hidden}
 
 .digit.active{
     border-color:var(--purple);
-    box-shadow:0 0 10px rgba(139,92,246,.25);
+    box-shadow:0 0 10px rgba(139,92,246,.35);
+    background:rgba(139,92,246,.10);
 }
 
 .analysis-footer{
@@ -450,20 +510,34 @@ body{overflow-x:hidden}
 
 @media(max-width:600px){
 
-    .app{padding:14px}
+    .app{
+        padding:14px
+    }
 
-    .header h1{font-size:26px}
+    .header h1{
+        font-size:26px
+    }
 
-    .cards{grid-template-columns:1fr}
+    .cards{
+        grid-template-columns:1fr
+    }
 
-    .prediction-area{gap:14px}
+    .prediction-area{
+        gap:12px
+    }
 
     .circle{
         width:92px;
         height:92px;
     }
 
-    .circle b{font-size:36px}
+    .circle b{
+        font-size:36px
+    }
+
+    .stats-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
 }
 </style>
 </head>
@@ -472,100 +546,114 @@ body{overflow-x:hidden}
 
 <div class="app">
 
-    <div class="topbar">
+<div class="topbar">
+    <div class="logo">🎯 CASPER FX</div>
 
-        <div class="logo">🎯 CASPER FX</div>
-
-        <div class="status">
-            <span class="dot" id="statusDot"></span>
-            <span class="connection" id="statusText">Disconnected</span>
-        </div>
-
+    <div class="status">
+        <span class="dot" id="statusDot"></span>
+        <span class="connection" id="statusText">Disconnected</span>
     </div>
+</div>
 
-    <div class="header">
+<div class="header">
+    <h1>Live Market Analysis</h1>
 
-        <h1>Live Market Analysis</h1>
-
-        <p>
-            Real-time volatility market monitoring and automated digit analysis.
-        </p>
-
-    </div>
-
-    <div class="dashboard-heading">
-
-        <h2>All Predictions Dashboard</h2>
-
-        <span>Matches / Digits Predictions</span>
-
-    </div>
-
-    <div class="controls">
-
-        <button class="btn primary" id="connectBtn">
-            Connect Live Data
-        </button>
-
-        <button class="btn secondary" id="disconnectBtn">
-            Disconnect
-        </button>
-
-    </div>
-
-    <p class="token-hint">
-        This dashboard reads Deriv's public market data feed — no login, API token,
-        or app registration required. Nothing you type or click here ever leaves
-        your browser except the direct WebSocket connection to Deriv itself.
+    <p>
+        Real-time volatility market monitoring and automated digit analysis.
     </p>
+</div>
 
-    <div class="summary">
+<div class="dashboard-heading">
+    <h2>All Predictions Dashboard</h2>
+    <span>Matches / Digits Predictions</span>
+</div>
 
-        <div class="summary-card">
-            <small>Connection</small>
-            <b id="connectionState">Waiting</b>
-        </div>
+<div class="controls">
 
-        <div class="summary-card">
-            <small>Markets</small>
-            <b id="marketCount">0</b>
-        </div>
+    <button class="btn primary" id="connectBtn">
+        Connect Live Data
+    </button>
 
-        <div class="summary-card">
-            <small>Subscriptions</small>
-            <b id="subscriptionCount">0</b>
-        </div>
+    <button class="btn secondary" id="disconnectBtn">
+        Disconnect
+    </button>
 
-        <div class="summary-card">
-            <small>Ticks Received</small>
-            <b id="totalTicks">0</b>
-        </div>
+</div>
 
+<p class="token-hint">
+    This dashboard reads Deriv's public market data feed — no login,
+    API token, or app registration required. Nothing you type or click
+    here ever leaves your browser except the direct WebSocket connection
+    to Deriv itself.
+</p>
+
+<div class="summary">
+
+    <div class="summary-card">
+        <small>Connection</small>
+        <b id="connectionState">Waiting</b>
     </div>
 
-    <div class="cards" id="cards">
-
-        <div class="loading">
-            <div class="spinner"></div>
-            Connect to start live market analysis...
-        </div>
-
+    <div class="summary-card">
+        <small>Markets</small>
+        <b id="marketCount">0</b>
     </div>
+
+    <div class="summary-card">
+        <small>Subscriptions</small>
+        <b id="subscriptionCount">0</b>
+    </div>
+
+    <div class="summary-card">
+        <small>Ticks Received</small>
+        <b id="totalTicks">0</b>
+    </div>
+
+</div>
+
+<div class="cards" id="cards">
+
+    <div class="loading">
+        <div class="spinner"></div>
+        Connect to start live market analysis...
+    </div>
+
+</div>
 
 </div>
 
 <script>
 
+/* =========================================================
+   CASPER FX CONFIGURATION
+========================================================= */
+
 const CONFIG = {
-    websocket: "wss://api.derivws.com/trading/v1/options/ws/public",
-    historySize: 300,
-    shortWindow: 25,
-    mediumWindow: 75,
-    longWindow: 200,
-    minimumTicks: 20,
-    reconnectDelay: 3000,
-    analysisInterval: 3000
+
+    websocket:
+        "wss://api.derivws.com/trading/v1/options/ws/public",
+
+    historySize:300,
+
+    shortWindow:25,
+
+    mediumWindow:75,
+
+    longWindow:200,
+
+    minimumTicks:20,
+
+    reconnectDelay:3000,
+
+    /* LOCKED PREDICTION CYCLE */
+    predictionCycleSeconds:20
+
 };
+
+
+/* =========================================================
+   GLOBAL STATE
+========================================================= */
 
 let ws = null;
 let markets = [];
@@ -575,11 +663,17 @@ let reconnectTimer = null;
 let totalTicks = 0;
 let subscribedSymbols = new Set();
 
-const cards = document.getElementById("cards");
+const cards =
+    document.getElementById("cards");
 
 
-document.getElementById("connectBtn")
-.addEventListener("click", () => {
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+document
+.getElementById("connectBtn")
+.addEventListener("click",() => {
 
     manuallyClosed = false;
 
@@ -588,62 +682,67 @@ document.getElementById("connectBtn")
 });
 
 
-document.getElementById("disconnectBtn")
-.addEventListener("click", () => {
+document
+.getElementById("disconnectBtn")
+.addEventListener("click",() => {
 
     manuallyClosed = true;
 
     clearTimeout(reconnectTimer);
 
     if(ws){
-
         ws.close();
-
     }
 
     setStatus(false,"Disconnected");
 
-    document.getElementById("connectionState").textContent =
-        "Disconnected";
+    document
+    .getElementById("connectionState")
+    .textContent = "Disconnected";
 
 });
 
 
+/* =========================================================
+   CONNECTION
+========================================================= */
+
 function connect(){
 
-    if(ws &&
-       (
-           ws.readyState === WebSocket.OPEN ||
-           ws.readyState === WebSocket.CONNECTING
-       )
+    if(
+        ws &&
+        (
+            ws.readyState === WebSocket.OPEN ||
+            ws.readyState === WebSocket.CONNECTING
+        )
     ){
         return;
     }
 
     clearTimeout(reconnectTimer);
 
-    // The new public feed takes no query params — no app_id needed.
-    const url = CONFIG.websocket;
-
     subscribedSymbols.clear();
 
     setStatus(false,"Connecting");
 
-    document.getElementById("connectionState").textContent =
-        "Connecting";
+    document
+    .getElementById("connectionState")
+    .textContent = "Connecting";
 
-    ws = new WebSocket(url);
+    ws =
+        new WebSocket(
+            CONFIG.websocket
+        );
 
 
     ws.onopen = () => {
 
         setStatus(true,"Live");
 
-        document.getElementById("connectionState").textContent =
-            "Connected";
+        document
+        .getElementById("connectionState")
+        .textContent = "Connected";
 
-        // This endpoint is public market data — no authorize step exists
-        // or is needed here, so we go straight to requesting symbols.
         requestMarkets();
 
     };
@@ -655,7 +754,10 @@ function connect(){
 
         try{
 
-            data = JSON.parse(event.data);
+            data =
+                JSON.parse(
+                    event.data
+                );
 
         }catch(error){
 
@@ -679,21 +781,28 @@ function connect(){
 
         subscribedSymbols.clear();
 
+        document
+        .getElementById("subscriptionCount")
+        .textContent = "0";
+
         setStatus(false,"Disconnected");
 
-        document.getElementById("connectionState").textContent =
-            "Disconnected";
+        document
+        .getElementById("connectionState")
+        .textContent = "Disconnected";
 
         if(!manuallyClosed){
-
             scheduleReconnect();
-
         }
 
     };
 
 }
 
+
+/* =========================================================
+   SEND
+========================================================= */
 
 function send(payload){
 
@@ -702,7 +811,9 @@ function send(payload){
         ws.readyState === WebSocket.OPEN
     ){
 
-        ws.send(JSON.stringify(payload));
+        ws.send(
+            JSON.stringify(payload)
+        );
 
         return true;
 
@@ -713,30 +824,46 @@ function send(payload){
 }
 
 
-function requestMarkets() {
+/* =========================================================
+   MARKET REQUEST
+========================================================= */
 
-    console.log("Requesting Deriv active symbols...");
+function requestMarkets(){
 
-    // NOTE: Deriv's current active_symbols schema only accepts
-    // { active_symbols, contract_type, passthrough, req_id }.
-    // "product_type" was removed from the request schema — sending it
-    // (as the old code did) causes the API to reject the call with an
-    // error, so no markets ever come back. Only send "active_symbols".
-    const sent = send({
-        active_symbols: "full",
-        req_id: 1
-    });
+    console.log(
+        "Requesting Deriv active symbols..."
+    );
 
-    if (!sent) {
-        console.error("Could not send active_symbols request.");
+    const sent =
+        send({
+
+            active_symbols:"full",
+
+            req_id:1
+
+        });
+
+    if(!sent){
+
+        console.error(
+            "Could not send active_symbols request."
+        );
+
     }
 
 }
 
 
+/* =========================================================
+   MESSAGE ROUTER
+========================================================= */
+
 function handleMessage(data){
 
-    console.log("CASPER FX DERIV RESPONSE:", data);
+    console.log(
+        "CASPER FX DERIV RESPONSE:",
+        data
+    );
 
     if(data.error){
 
@@ -746,77 +873,101 @@ function handleMessage(data){
         );
 
         cards.innerHTML = `
+
             <div class="error-box">
+
                 <strong>Deriv API Error</strong>
+
                 <br>
+
                 <span style="font-size:12px">
+
                     ${escapeHTML(
                         data.error.message ||
                         "Unknown Deriv API error"
                     )}
+
                 </span>
+
             </div>
+
         `;
 
-        document.getElementById(
-            "connectionState"
-        ).textContent = "API Error";
+        document
+        .getElementById("connectionState")
+        .textContent = "API Error";
 
         return;
+
     }
 
-    // Route primarily off msg_type (more reliable than guessing from
-    // which keys are present — every Deriv response carries msg_type).
-    const type = data.msg_type;
 
-    if (type === "active_symbols" || data.active_symbols) {
+    const type =
+        data.msg_type;
 
-        // Log the exact bytes Deriv sent, unambiguously — the collapsed
-        // console object view can't tell you "field missing" apart from
-        // "field present but empty array", and that distinction is
-        // exactly what we need to diagnose right now.
+
+    if(
+        type === "active_symbols" ||
+        data.active_symbols
+    ){
+
         console.log(
-            "CASPER FX RAW active_symbols RESPONSE (copy this whole line):",
+            "CASPER FX RAW active_symbols RESPONSE:",
             JSON.stringify(data)
         );
 
         console.log(
-            "CASPER FX active_symbols FIELD PRESENT:",
-            Object.prototype.hasOwnProperty.call(data, "active_symbols")
-        );
-
-        console.log(
             "CASPER FX ACTIVE SYMBOL COUNT:",
-            Array.isArray(data.active_symbols) ? data.active_symbols.length : "N/A (not an array)"
+            Array.isArray(data.active_symbols)
+            ? data.active_symbols.length
+            : "N/A"
         );
 
-        processMarkets(data.active_symbols || []);
+        processMarkets(
+            data.active_symbols || []
+        );
 
         return;
+
     }
 
-    if(type === "tick" || data.tick){
 
-        processTick(data.tick);
+    if(
+        type === "tick" ||
+        data.tick
+    ){
+
+        processTick(
+            data.tick
+        );
 
         return;
+
     }
+
 
     console.log(
         "CASPER FX UNHANDLED DERIV RESPONSE:",
         data
     );
+
 }
 
 
-// Small helper: different API versions/environments have used different
-// field names for the same data (symbol vs underlying_symbol, etc). Read
-// whichever is present instead of hard-coding one name.
-function pick(item, keys){
+/* =========================================================
+   FIELD HELPER
+========================================================= */
 
-    for (const key of keys) {
+function pick(item,keys){
 
-        if (item[key] !== undefined && item[key] !== null) {
+    for(
+        const key of keys
+    ){
+
+        if(
+            item[key] !== undefined &&
+            item[key] !== null
+        ){
 
             return item[key];
 
@@ -829,124 +980,253 @@ function pick(item, keys){
 }
 
 
-function processMarkets(symbols) {
+/* =========================================================
+   MARKET DISCOVERY
+========================================================= */
 
-    console.log("ALL MARKETS RETURNED:", symbols);
+function processMarkets(symbols){
 
-    if (!Array.isArray(symbols) || symbols.length === 0) {
+    console.log(
+        "ALL MARKETS RETURNED:",
+        symbols
+    );
+
+    if(
+        !Array.isArray(symbols) ||
+        symbols.length === 0
+    ){
 
         cards.innerHTML = `
+
             <div class="error-box">
                 No markets were returned by Deriv.
             </div>
+
         `;
 
         return;
+
     }
 
-    const found = symbols.filter(item => {
 
-        const symbolRaw =
-            pick(item, ["symbol", "underlying_symbol"]) || "";
+    const found =
+        symbols.filter(item => {
 
-        const nameRaw =
-            pick(item, ["display_name", "underlying_symbol_name", "name"]) || "";
+            const symbolRaw =
+                pick(
+                    item,
+                    [
+                        "symbol",
+                        "underlying_symbol"
+                    ]
+                ) || "";
 
-        const symbol = String(symbolRaw).toUpperCase();
+            const nameRaw =
+                pick(
+                    item,
+                    [
+                        "display_name",
+                        "underlying_symbol_name",
+                        "name"
+                    ]
+                ) || "";
 
-        const name = String(nameRaw).toLowerCase();
+            const symbol =
+                String(
+                    symbolRaw
+                ).toUpperCase();
 
-        return (
-            name.includes("volatility") ||
-            name.includes("crash") ||
-            name.includes("boom") ||
-            name.includes("jump") ||
-            name.includes("range break") ||
-            name.includes("step index") ||
-            symbol.includes("R_") ||
-            symbol.includes("1HZ") ||
-            symbol.startsWith("CRASH") ||
-            symbol.startsWith("BOOM") ||
-            symbol.startsWith("JD") ||
-            symbol.startsWith("STPRNG") ||
-            symbol.startsWith("RDBEAR") ||
-            symbol.startsWith("RDBULL")
+            const name =
+                String(
+                    nameRaw
+                ).toLowerCase();
+
+
+            return (
+
+                name.includes("volatility") ||
+
+                name.includes("crash") ||
+
+                name.includes("boom") ||
+
+                name.includes("jump") ||
+
+                name.includes("range break") ||
+
+                name.includes("step index") ||
+
+                symbol.includes("R_") ||
+
+                symbol.includes("1HZ") ||
+
+                symbol.startsWith("CRASH") ||
+
+                symbol.startsWith("BOOM") ||
+
+                symbol.startsWith("JD") ||
+
+                symbol.startsWith("STPRNG") ||
+
+                symbol.startsWith("RDBEAR") ||
+
+                symbol.startsWith("RDBULL")
+
+            );
+
+        });
+
+
+    console.log(
+        "VOLATILITY MARKETS FOUND:",
+        found
+    );
+
+
+    markets =
+        found
+        .map(item => {
+
+            const symbol =
+                pick(
+                    item,
+                    [
+                        "symbol",
+                        "underlying_symbol"
+                    ]
+                );
+
+            const name =
+                pick(
+                    item,
+                    [
+                        "display_name",
+                        "underlying_symbol_name",
+                        "name"
+                    ]
+                ) || symbol;
+
+
+            return {
+                symbol,
+                name
+            };
+
+        })
+        .filter(
+            market =>
+                !!market.symbol
+        );
+
+
+    document
+    .getElementById("marketCount")
+    .textContent =
+        markets.length;
+
+
+    if(markets.length === 0){
+
+        cards.innerHTML = `
+
+            <div class="error-box">
+
+                Connected to Deriv,
+                but no volatility markets were detected.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    markets.forEach(market => {
+
+        marketData[
+            market.symbol
+        ] = {
+
+            symbol:
+                market.symbol,
+
+            name:
+                market.name,
+
+            ticks:[],
+
+            lastDigit:null,
+
+            lastPrice:null,
+
+            pipSize:null,
+
+            analysis:null,
+
+            predictionLocked:false,
+
+            nextAnalysis:0,
+
+            cycleEndsAt:0
+
+        };
+
+
+        subscribeToMarket(
+            market.symbol
         );
 
     });
 
-    console.log("VOLATILITY MARKETS FOUND:", found);
-
-    markets = found.map(item => {
-
-        const symbol = pick(item, ["symbol", "underlying_symbol"]);
-
-        const name =
-            pick(item, ["display_name", "underlying_symbol_name", "name"]) ||
-            symbol;
-
-        return { symbol, name };
-
-    }).filter(market => !!market.symbol);
-
-    document.getElementById("marketCount").textContent =
-        markets.length;
-
-    if (markets.length === 0) {
-
-        cards.innerHTML = `
-            <div class="error-box">
-                Connected to Deriv, but no volatility markets were detected.
-            </div>
-        `;
-
-        return;
-    }
-
-    markets.forEach(market => {
-
-        marketData[market.symbol] = {
-            symbol: market.symbol,
-            name: market.name,
-            ticks: [],
-            lastDigit: null,
-            lastPrice: null,
-            pipSize: null,
-            analysis: null,
-            nextAnalysis: 0
-        };
-
-        subscribeToMarket(market.symbol);
-
-    });
 
     renderCards();
+
 
     console.log(
         "SUCCESS — VOLATILITY MARKETS:",
         markets
     );
+
 }
 
 
+/* =========================================================
+   SUBSCRIBE
+========================================================= */
+
 function subscribeToMarket(symbol){
 
-    if(subscribedSymbols.has(symbol)){
+    if(
+        subscribedSymbols.has(symbol)
+    ){
 
         return;
 
     }
 
-    const sent = send({
-        ticks:symbol,
-        subscribe:1
-    });
+
+    const sent =
+        send({
+
+            ticks:symbol,
+
+            subscribe:1
+
+        });
+
 
     if(sent){
 
-        subscribedSymbols.add(symbol);
+        subscribedSymbols.add(
+            symbol
+        );
 
-        document.getElementById("subscriptionCount")
+        document
+        .getElementById(
+            "subscriptionCount"
+        )
         .textContent =
             subscribedSymbols.size;
 
@@ -955,51 +1235,78 @@ function subscribeToMarket(symbol){
 }
 
 
+/* =========================================================
+   TICK PROCESSING
+========================================================= */
+
 function processTick(tick){
 
-    if (!tick) {
-
+    if(!tick){
         return;
-
     }
 
-    const symbol = tick.symbol;
 
-    const data = marketData[symbol];
+    const symbol =
+        tick.symbol;
+
+
+    const data =
+        marketData[symbol];
+
 
     if(!data){
-
         return;
-
     }
+
 
     const price =
-        Number(tick.quote);
+        Number(
+            tick.quote
+        );
 
-    if(!Number.isFinite(price)){
 
+    if(
+        !Number.isFinite(price)
+    ){
         return;
-
     }
 
+
     const pipSize =
-        Number.isInteger(Number(tick.pip_size))
+        Number.isInteger(
+            Number(tick.pip_size)
+        )
         ? Number(tick.pip_size)
         : data.pipSize || 2;
 
+
     const digit =
-        getLastDigit(price,pipSize);
+        getLastDigit(
+            price,
+            pipSize
+        );
 
-    data.lastPrice = price;
 
-    data.lastDigit = digit;
+    data.lastPrice =
+        price;
 
-    data.pipSize = pipSize;
+    data.lastDigit =
+        digit;
+
+    data.pipSize =
+        pipSize;
+
 
     data.ticks.push({
+
         digit:digit,
+
         price:price,
-        epoch:Number(tick.epoch) || Date.now()/1000
+
+        epoch:
+            Number(tick.epoch) ||
+            Date.now()/1000
+
     });
 
 
@@ -1012,51 +1319,81 @@ function processTick(tick){
 
     }
 
+
     totalTicks++;
 
-    document.getElementById("totalTicks").textContent =
+
+    document
+    .getElementById("totalTicks")
+    .textContent =
         totalTicks;
 
 
+    /*
+     Live data continues updating,
+     but the locked prediction does not.
+    */
+
     if(
         data.ticks.length >=
-        CONFIG.minimumTicks
+        CONFIG.minimumTicks &&
+        !data.predictionLocked
     ){
 
-        calculateAnalysis(data);
+        createNewPrediction(
+            data
+        );
 
     }
+
 
     renderCards();
 
 }
 
 
-function getLastDigit(price,pipSize){
+/* =========================================================
+   LAST DIGIT
+========================================================= */
+
+function getLastDigit(
+    price,
+    pipSize
+){
 
     let decimals =
         Number.isInteger(pipSize)
         ? pipSize
         : 2;
 
+
     decimals =
         Math.max(
             0,
-            Math.min(10,decimals)
+            Math.min(
+                10,
+                decimals
+            )
         );
+
 
     const formatted =
         Number(price)
         .toFixed(decimals);
 
+
     const decimalPart =
         formatted.split(".")[1] || "";
 
-    if(!decimalPart.length){
+
+    if(
+        !decimalPart.length
+    ){
 
         return 0;
 
     }
+
 
     return Number(
         decimalPart[
@@ -1067,37 +1404,124 @@ function getLastDigit(price,pipSize){
 }
 
 
-function calculateAnalysis(data){
+/* =========================================================
+   CREATE NEW LOCKED PREDICTION
+========================================================= */
 
-    const ticks = data.ticks;
+function createNewPrediction(data){
 
-    if(
-        ticks.length 
-        CONFIG.minimumTicks
-    ){
+    const analysis =
+        calculateAnalysis(
+            data
+        );
+
+
+    if(!analysis){
         return;
     }
 
 
+    data.analysis =
+        analysis;
+
+
+    data.predictionLocked =
+        true;
+
+
+    /*
+     EXACT 20 SECOND LOCK
+    */
+
+    data.nextAnalysis =
+        CONFIG.predictionCycleSeconds;
+
+
+    data.cycleEndsAt =
+        Date.now() +
+        CONFIG.predictionCycleSeconds * 1000;
+
+
+    console.log(
+        "CASPER FX PREDICTION LOCKED:",
+        data.symbol,
+        "DIGIT:",
+        analysis.predictedDigit,
+        "MATCHES:",
+        analysis.matches + "%",
+        "DIFFERS:",
+        analysis.differs + "%",
+        "CONFIDENCE:",
+        analysis.confidence + "%",
+        "CYCLE:",
+        CONFIG.predictionCycleSeconds + "s"
+    );
+
+}
+
+
+/* =========================================================
+   IMPROVED ANALYSIS ENGINE
+========================================================= */
+
+function calculateAnalysis(data){
+
+    const ticks =
+        data.ticks;
+
+
+    if(
+        ticks.length <
+        CONFIG.minimumTicks
+    ){
+
+        return null;
+
+    }
+
+
     const shortTicks =
-        ticks.slice(-CONFIG.shortWindow);
+        ticks.slice(
+            -CONFIG.shortWindow
+        );
+
 
     const mediumTicks =
-        ticks.slice(-CONFIG.mediumWindow);
+        ticks.slice(
+            -CONFIG.mediumWindow
+        );
+
 
     const longTicks =
-        ticks.slice(-CONFIG.longWindow);
+        ticks.slice(
+            -CONFIG.longWindow
+        );
 
+
+    /*
+     Each digit receives an ensemble score.
+
+     The score is deliberately based on several
+     different observations rather than one
+     frequency calculation.
+    */
 
     const scores =
         Array(10).fill(0);
 
 
+    /*
+     1. Multi-window frequency.
+
+     Recent data gets the largest influence.
+    */
+
     addFrequencyScores(
         scores,
         shortTicks,
-        0.50
+        0.45
     );
+
 
     addFrequencyScores(
         scores,
@@ -1105,117 +1529,260 @@ function calculateAnalysis(data){
         0.30
     );
 
+
     addFrequencyScores(
         scores,
         longTicks,
-        0.20
+        0.15
     );
 
 
-    addRecentWeight(
+    /*
+     2. Recency.
+
+     Recent observations receive additional
+     influence, but the effect is deliberately
+     limited so one or two ticks cannot dominate.
+    */
+
+    addImprovedRecencyScore(
         scores,
-        ticks.slice(-40)
+        shortTicks
     );
 
 
-    addTransitionScores(
+    /*
+     3. Transition behaviour.
+
+     We inspect what tends to follow recent
+     digits, giving more weight to recent
+     transitions.
+    */
+
+    addImprovedTransitionScores(
         scores,
         ticks
     );
 
 
-    addStreakScores(
+    /*
+     4. Streak behaviour.
+
+     A streak is considered, but its influence
+     is capped so it cannot overpower the
+     broader distribution.
+    */
+
+    addImprovedStreakScores(
         scores,
         ticks
+    );
+
+
+    /*
+     5. Recent-vs-long-term agreement.
+
+     If a digit is supported by both the recent
+     and broader samples, it receives a modest
+     agreement bonus.
+    */
+
+    addWindowAgreementScore(
+        scores,
+        shortTicks,
+        mediumTicks,
+        longTicks
     );
 
 
     const normalized =
-        normalizeScores(scores);
+        normalizeScores(
+            scores
+        );
 
 
     const ranked =
         normalized
-        .map((score,digit) => ({
-            digit,
-            score
-        }))
-        .sort((a,b) =>
-            b.score - a.score
+        .map(
+            (score,digit) => ({
+
+                digit,
+
+                score
+
+            })
+        )
+        .sort(
+            (a,b) => {
+
+                if(
+                    b.score !==
+                    a.score
+                ){
+
+                    return (
+                        b.score -
+                        a.score
+                    );
+
+                }
+
+                return (
+                    a.digit -
+                    b.digit
+                );
+
+            }
         );
+
+
+    if(!ranked.length){
+        return null;
+    }
 
 
     const predictedDigit =
         ranked[0].digit;
 
 
-    const rawConfidence =
-        calculateConfidence(
-            ranked,
-            ticks.length
+    /*
+     Confidence is based on:
+
+     - separation between the top two digits
+     - sample size
+     - agreement between analytical windows
+
+     It is not allowed to become artificially
+     high simply because a number was selected.
+    */
+
+    const agreement =
+        calculateSignalAgreement(
+            shortTicks,
+            mediumTicks,
+            longTicks,
+            predictedDigit
         );
 
 
+    const confidence =
+        calculateImprovedConfidence(
+            ranked,
+            ticks.length,
+            agreement
+        );
+
+
+    /*
+     Even / Odd remains historical statistics.
+    */
+
     const even =
         ticks.filter(
-            item => item.digit % 2 === 0
+            item =>
+                item.digit % 2 === 0
         ).length;
 
-    const odd =
-        ticks.length - even;
 
+    const odd =
+        ticks.length -
+        even;
+
+
+    /*
+     Over / Under remains historical statistics.
+    */
 
     const over =
         ticks.filter(
-            item => item.digit >= 5
+            item =>
+                item.digit >= 5
         ).length;
 
+
     const under =
-        ticks.length - over;
+        ticks.length -
+        over;
 
 
-    data.analysis = {
+    /*
+     Matches/Differs remain tied to the
+     LOCKED predicted digit.
 
-        predictedDigit:predictedDigit,
+     They are statistical model percentages,
+     not guarantees of the next tick.
+    */
 
-        confidence:rawConfidence,
+    const matches =
+        normalized[
+            predictedDigit
+        ];
+
+
+    const differs =
+        100 -
+        matches;
+
+
+    return {
+
+        predictedDigit,
+
+        confidence,
+
+        matches,
+
+        differs,
 
         scores:normalized,
 
-        ranked:ranked,
+        ranked,
 
         evenPercent:
             Math.round(
-                even / ticks.length * 100
+                even /
+                ticks.length *
+                100
             ),
 
         oddPercent:
             Math.round(
-                odd / ticks.length * 100
+                odd /
+                ticks.length *
+                100
             ),
 
         overPercent:
             Math.round(
-                over / ticks.length * 100
+                over /
+                ticks.length *
+                100
             ),
 
         underPercent:
             Math.round(
-                under / ticks.length * 100
+                under /
+                ticks.length *
+                100
             ),
 
-        sample:ticks.length
+        sample:
+            ticks.length,
+
+        signalAgreement:
+            agreement,
+
+        createdAt:
+            Date.now()
 
     };
 
-
-    data.nextAnalysis =
-        Math.ceil(
-            CONFIG.analysisInterval / 1000
-        );
-
 }
 
+
+/* =========================================================
+   FREQUENCY SCORES
+========================================================= */
 
 function addFrequencyScores(
     scores,
@@ -1227,8 +1794,10 @@ function addFrequencyScores(
         return;
     }
 
+
     const counts =
         Array(10).fill(0);
+
 
     ticks.forEach(item => {
 
@@ -1238,84 +1807,209 @@ function addFrequencyScores(
             item.digit <= 9
         ){
 
-            counts[item.digit]++;
+            counts[
+                item.digit
+            ]++;
 
         }
 
     });
 
 
-    const total = ticks.length;
+    const validCount =
+        counts.reduce(
+            (sum,count) =>
+                sum + count,
+            0
+        );
 
 
-    counts.forEach((count,digit) => {
-
-        scores[digit] +=
-            (count / total) *
-            weight * 100;
-
-    });
-
-}
-
-
-function addRecentWeight(
-    scores,
-    ticks
-){
-
-    const length = ticks.length;
-
-    ticks.forEach((item,index) => {
-
-        const recency =
-            (index + 1) / length;
-
-        scores[item.digit] +=
-            recency * 4;
-
-    });
-
-}
-
-
-function addTransitionScores(
-    scores,
-    ticks
-){
-
-    if(ticks.length < 3){
+    if(!validCount){
         return;
     }
 
+
+    counts.forEach(
+        (count,digit) => {
+
+            scores[digit] +=
+                (
+                    count /
+                    validCount
+                ) *
+                weight *
+                100;
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   IMPROVED RECENCY
+========================================================= */
+
+function addImprovedRecencyScore(
+    scores,
+    ticks
+){
+
+    if(!ticks.length){
+        return;
+    }
+
+
+    const length =
+        ticks.length;
+
+
+    ticks.forEach(
+        (item,index) => {
+
+            if(
+                !Number.isInteger(item.digit) ||
+                item.digit < 0 ||
+                item.digit > 9
+            ){
+
+                return;
+
+            }
+
+
+            /*
+             Quadratic recency weighting.
+
+             Older observations still matter,
+             but newer observations matter more.
+            */
+
+            const position =
+                (index + 1) /
+                length;
+
+
+            const recency =
+                position * position;
+
+
+            scores[
+                item.digit
+            ] +=
+                recency * 3.5;
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   IMPROVED TRANSITION SCORES
+========================================================= */
+
+function addImprovedTransitionScores(
+    scores,
+    ticks
+){
+
+    if(
+        ticks.length < 3
+    ){
+
+        return;
+
+    }
+
+
+    /*
+     Only the most relevant recent history is
+     used for transition analysis.
+    */
+
+    const transitionTicks =
+        ticks.slice(-120);
+
+
     const lastDigit =
-        ticks[ticks.length - 1].digit;
+        transitionTicks[
+            transitionTicks.length - 1
+        ].digit;
+
+
+    if(
+        !Number.isInteger(lastDigit)
+    ){
+
+        return;
+
+    }
+
 
     const transitionCounts =
         Array(10).fill(0);
 
+
     let total = 0;
 
 
+    /*
+     More recent matching transitions receive
+     more weight.
+    */
+
     for(
         let i = 0;
-        i < ticks.length - 1;
+        i < transitionTicks.length - 1;
         i++
     ){
 
         if(
-            ticks[i].digit ===
+            transitionTicks[i].digit !==
             lastDigit
         ){
 
-            const next =
-                ticks[i+1].digit;
-
-            transitionCounts[next]++;
-
-            total++;
+            continue;
 
         }
+
+
+        const next =
+            transitionTicks[i + 1].digit;
+
+
+        if(
+            !Number.isInteger(next) ||
+            next < 0 ||
+            next > 9
+        ){
+
+            continue;
+
+        }
+
+
+        const age =
+            transitionTicks.length -
+            1 -
+            i;
+
+
+        const recencyWeight =
+            1 /
+            (
+                1 +
+                age * 0.08
+            );
+
+
+        transitionCounts[next] +=
+            recencyWeight;
+
+
+        total +=
+            recencyWeight;
 
     }
 
@@ -1329,7 +2023,11 @@ function addTransitionScores(
         (count,digit) => {
 
             scores[digit] +=
-                (count / total) * 15;
+                (
+                    count /
+                    total
+                ) *
+                12;
 
         }
     );
@@ -1337,20 +2035,42 @@ function addTransitionScores(
 }
 
 
-function addStreakScores(
+/* =========================================================
+   IMPROVED STREAK SCORES
+========================================================= */
+
+function addImprovedStreakScores(
     scores,
     ticks
 ){
 
-    if(ticks.length < 4){
+    if(
+        ticks.length < 4
+    ){
+
         return;
+
     }
 
-    const recent =
-        ticks.slice(-12);
 
-    let streakDigit =
-        recent[recent.length - 1].digit;
+    const recent =
+        ticks.slice(-15);
+
+
+    const streakDigit =
+        recent[
+            recent.length - 1
+        ].digit;
+
+
+    if(
+        !Number.isInteger(streakDigit)
+    ){
+
+        return;
+
+    }
+
 
     let streak = 0;
 
@@ -1377,12 +2097,21 @@ function addStreakScores(
     }
 
 
-    if(streak >= 2){
+    if(
+        streak >= 2
+    ){
 
-        scores[streakDigit] +=
+        /*
+         Streak influence is intentionally
+         capped.
+        */
+
+        scores[
+            streakDigit
+        ] +=
             Math.min(
-                streak * 2,
-                10
+                streak * 1.5,
+                7
             );
 
     }
@@ -1390,13 +2119,122 @@ function addStreakScores(
 }
 
 
-function normalizeScores(scores){
+/* =========================================================
+   WINDOW AGREEMENT
+========================================================= */
 
-    const total =
-        scores.reduce(
-            (a,b) => a+b,
-            0
+function addWindowAgreementScore(
+    scores,
+    shortTicks,
+    mediumTicks,
+    longTicks
+){
+
+    const shortCounts =
+        getDigitDistribution(
+            shortTicks
         );
+
+
+    const mediumCounts =
+        getDigitDistribution(
+            mediumTicks
+        );
+
+
+    const longCounts =
+        getDigitDistribution(
+            longTicks
+        );
+
+
+    for(
+        let digit = 0;
+        digit < 10;
+        digit++
+    ){
+
+        const shortRate =
+            shortCounts[digit];
+
+
+        const mediumRate =
+            mediumCounts[digit];
+
+
+        const longRate =
+            longCounts[digit];
+
+
+        /*
+         Compare the three windows.
+
+         A digit gets a small bonus when it is
+         consistently represented across windows.
+        */
+
+        const minimum =
+            Math.min(
+                shortRate,
+                mediumRate,
+                longRate
+            );
+
+
+        const average =
+            (
+                shortRate +
+                mediumRate +
+                longRate
+            ) / 3;
+
+
+        const agreement =
+            Math.min(
+                minimum,
+                average
+            );
+
+
+        scores[digit] +=
+            agreement * 5;
+
+    }
+
+}
+
+
+/* =========================================================
+   DIGIT DISTRIBUTION HELPER
+========================================================= */
+
+function getDigitDistribution(ticks){
+
+    const counts =
+        Array(10).fill(0);
+
+
+    let total = 0;
+
+
+    ticks.forEach(item => {
+
+        if(
+            Number.isInteger(item.digit) &&
+            item.digit >= 0 &&
+            item.digit <= 9
+        ){
+
+            counts[
+                item.digit
+            ]++;
+
+            total++;
+
+        }
+
+    });
+
 
     if(!total){
 
@@ -1404,33 +2242,243 @@ function normalizeScores(scores){
 
     }
 
-    return scores.map(score =>
-        Math.round(
-            score / total * 100
-        )
+
+    return counts.map(
+        count =>
+            count / total
     );
 
 }
 
 
-function calculateConfidence(
-    ranked,
-    sample
+/* =========================================================
+   SIGNAL AGREEMENT
+========================================================= */
+
+function calculateSignalAgreement(
+    shortTicks,
+    mediumTicks,
+    longTicks,
+    predictedDigit
 ){
 
-    if(!ranked.length){
+    const short =
+        getDigitDistribution(
+            shortTicks
+        );
+
+
+    const medium =
+        getDigitDistribution(
+            mediumTicks
+        );
+
+
+    const long =
+        getDigitDistribution(
+            longTicks
+        );
+
+
+    const shortRate =
+        short[predictedDigit] || 0;
+
+
+    const mediumRate =
+        medium[predictedDigit] || 0;
+
+
+    const longRate =
+        long[predictedDigit] || 0;
+
+
+    /*
+     Compare the predicted digit's relative
+     strength in each window.
+
+     0 = weak agreement
+     1 = strong agreement
+    */
+
+    const average =
+        (
+            shortRate +
+            mediumRate +
+            longRate
+        ) / 3;
+
+
+    const spread =
+        Math.max(
+            shortRate,
+            mediumRate,
+            longRate
+        ) -
+        Math.min(
+            shortRate,
+            mediumRate,
+            longRate
+        );
+
+
+    const consistency =
+        Math.max(
+            0,
+            1 -
+            Math.min(
+                1,
+                spread * 8
+            )
+        );
+
+
+    const strength =
+        Math.min(
+            1,
+            average * 10
+        );
+
+
+    return (
+        consistency *
+        0.65 +
+        strength *
+        0.35
+    );
+
+}
+
+
+/* =========================================================
+   NORMALIZE SCORES
+========================================================= */
+
+function normalizeScores(scores){
+
+    const safeScores =
+        scores.map(
+            score =>
+                Number.isFinite(score)
+                ? Math.max(0,score)
+                : 0
+        );
+
+
+    const total =
+        safeScores.reduce(
+            (a,b) =>
+                a + b,
+            0
+        );
+
+
+    if(!total){
+
+        return Array(10).fill(10);
+
+    }
+
+
+    const raw =
+        safeScores.map(
+            score =>
+                score /
+                total *
+                100
+        );
+
+
+    const result =
+        raw.map(
+            value =>
+                Math.floor(value)
+        );
+
+
+    let remainder =
+        100 -
+        result.reduce(
+            (a,b) =>
+                a + b,
+            0
+        );
+
+
+    const order =
+        raw
+        .map(
+            (value,index) => ({
+
+                index:index,
+
+                fraction:
+                    value -
+                    Math.floor(value)
+
+            })
+        )
+        .sort(
+            (a,b) =>
+                b.fraction -
+                a.fraction
+        );
+
+
+    let position = 0;
+
+
+    while(
+        remainder > 0 &&
+        position < order.length
+    ){
+
+        result[
+            order[position].index
+        ]++;
+
+        remainder--;
+
+        position++;
+
+    }
+
+
+    return result;
+
+}
+
+
+/* =========================================================
+   IMPROVED CONFIDENCE
+========================================================= */
+
+function calculateImprovedConfidence(
+    ranked,
+    sample,
+    agreement
+){
+
+    if(
+        !ranked ||
+        ranked.length < 2
+    ){
 
         return 0;
 
     }
 
+
     const top =
-        ranked[0].score;
+        Number(
+            ranked[0].score
+        ) || 0;
+
 
     const second =
-        ranked[1]
-        ? ranked[1].score
-        : 0;
+        Number(
+            ranked[1].score
+        ) || 0;
+
 
     const separation =
         Math.max(
@@ -1438,17 +2486,57 @@ function calculateConfidence(
             top - second
         );
 
+
+    /*
+     Sample quality.
+
+     20 ticks is enough to begin analysis,
+     but confidence grows as more history
+     becomes available.
+    */
+
     const sampleFactor =
         Math.min(
-            sample / 100,
+            sample / CONFIG.longWindow,
             1
         );
 
 
+    /*
+     Convert top-vs-second separation into
+     a bounded signal-strength component.
+    */
+
+    const separationFactor =
+        Math.min(
+            1,
+            separation / 8
+        );
+
+
+    /*
+     Combine the three components.
+
+     This produces a measured analytical
+     confidence rather than a guaranteed
+     probability of the next tick.
+    */
+
+    const quality =
+        (
+            sampleFactor * 0.35 +
+            separationFactor * 0.35 +
+            agreement * 0.30
+        );
+
+
+    /*
+     Keep the displayed confidence conservative.
+    */
+
     let confidence =
-        40 +
-        separation * 2 +
-        sampleFactor * 20;
+        30 +
+        quality * 60;
 
 
     confidence =
@@ -1456,7 +2544,7 @@ function calculateConfidence(
             Math.max(
                 0,
                 Math.min(
-                    95,
+                    90,
                     confidence
                 )
             )
@@ -1468,307 +2556,493 @@ function calculateConfidence(
 }
 
 
+/* =========================================================
+   RENDER CARDS
+========================================================= */
+
 function renderCards(){
 
     if(!markets.length){
-
         return;
-
     }
 
 
     cards.innerHTML =
-        markets.map(market => {
+        markets
+        .map(
+            market => {
 
-            const data =
-                marketData[market.symbol];
-
-            if(!data){
-
-                return "";
-
-            }
+                const data =
+                    marketData[
+                        market.symbol
+                    ];
 
 
-            const analysis =
-                data.analysis;
-
-            const predicted =
-                analysis
-                ? analysis.predictedDigit
-                : "—";
+                if(!data){
+                    return "";
+                }
 
 
-            const confidence =
-                analysis
-                ? analysis.confidence
-                : 0;
+                const analysis =
+                    data.analysis;
 
 
-            const color =
-                analysis
-                ? getColor(predicted)
-                : "blue";
+                const predicted =
+                    analysis
+                    ? analysis.predictedDigit
+                    : "—";
 
 
-            const digitScores =
-                analysis
-                ? analysis.scores
-                : Array(10).fill(0);
+                const confidence =
+                    analysis
+                    ? analysis.confidence
+                    : 0;
 
 
-            return `
-
-            <div class="card">
-
-                <div class="market-title">
-
-                    <div class="market-name">
-                        ${escapeHTML(data.name)}
-                    </div>
-
-                    <div class="market-symbol">
-                        ${escapeHTML(data.symbol)}
-                    </div>
-
-                </div>
+                const matches =
+                    analysis
+                    ? analysis.matches
+                    : null;
 
 
-                <div class="prediction-area">
-
-                    <div class="circle ${color}">
-
-                        <span class="target-icon">🎯</span>
-
-                        <b>${predicted}</b>
-
-                    </div>
-
-                    <div class="badge-line">
-
-                        <div style="width:${confidence}%;"></div>
-
-                    </div>
-
-                </div>
+                const differs =
+                    analysis
+                    ? analysis.differs
+                    : null;
 
 
-                <div class="prediction-info">
+                const color =
+                    analysis
+                    ? getColor(predicted)
+                    : "blue";
 
-                    <div class="info-row">
 
-                        <span>Confidence</span>
+                const digitScores =
+                    analysis
+                    ? analysis.scores
+                    : Array(10).fill(0);
 
-                        <b class="confidence">
-                            ${
-                                analysis
-                                ? confidence + "%"
-                                : "Waiting"
-                            }
-                        </b>
+
+                const locked =
+                    data.predictionLocked &&
+                    analysis;
+
+
+                const timer =
+                    locked
+                    ? Math.max(
+                        0,
+                        data.nextAnalysis
+                    )
+                    : 0;
+
+
+                return `
+
+                <div class="card">
+
+                    <div class="market-title">
+
+                        <div class="market-name">
+                            ${escapeHTML(data.name)}
+                        </div>
+
+                        <div class="market-symbol">
+                            ${escapeHTML(data.symbol)}
+                        </div>
 
                     </div>
 
 
-                    <div class="info-row">
+                    <div class="prediction-area">
 
-                        <span>Current digit</span>
+                        <div class="
+                            lock-status
+                            ${locked ? "" : "waiting"}
+                        ">
 
-                        <b class="live-digit">
-                            ${
-                                data.lastDigit === null
-                                ? "—"
-                                : data.lastDigit
-                            }
-                        </b>
+                            <span class="lock-icon">
+                                ${locked ? "🔒" : "⏳"}
+                            </span>
 
-                    </div>
+                            <span>
+                                ${
+                                    locked
+                                    ? "PREDICTION LOCKED"
+                                    : "COLLECTING DATA"
+                                }
+                            </span>
 
-
-                    <div class="info-row">
-
-                        <span>Tick sample</span>
-
-                        <b>
-                            ${data.ticks.length}
-                        </b>
-
-                    </div>
+                        </div>
 
 
-                    <div class="info-row">
+                        <div class="circle ${color}">
 
-                        <span>Next analysis</span>
+                            <span class="target-icon">
+                                🎯
+                            </span>
 
-                        <b>
-                            ${
-                                analysis
-                                ? data.nextAnalysis + "s"
-                                : "Collecting"
-                            }
-                        </b>
+                            <b>
+                                ${predicted}
+                            </b>
 
-                    </div>
-
-                </div>
+                        </div>
 
 
-                <div class="stats-grid">
+                        <div class="badge-line">
 
-                    <div class="stat">
+                            <div
+                                style="
+                                    width:${confidence}%;
+                                ">
+                            </div>
 
-                        <small>Even</small>
-
-                        <b>
-                            ${
-                                analysis
-                                ? analysis.evenPercent + "%"
-                                : "—"
-                            }
-                        </b>
-
-                    </div>
+                        </div>
 
 
-                    <div class="stat">
+                        <div class="timer-box">
 
-                        <small>Odd</small>
+                            <span class="timer-label">
 
-                        <b>
-                            ${
-                                analysis
-                                ? analysis.oddPercent + "%"
-                                : "—"
-                            }
-                        </b>
+                                ${
+                                    locked
+                                    ? "Next prediction"
+                                    : "Prediction starts"
+                                }
 
-                    </div>
+                            </span>
 
 
-                    <div class="stat">
+                            <span class="
+                                timer
+                                ${timer <= 0 ? "refreshing" : ""}
+                            ">
 
-                        <small>Over 4</small>
+                                ${
+                                    locked
+                                    ? timer + "s"
+                                    : "WAIT"
+                                }
 
-                        <b>
-                            ${
-                                analysis
-                                ? analysis.overPercent + "%"
-                                : "—"
-                            }
-                        </b>
+                            </span>
+
+                        </div>
 
                     </div>
 
 
-                    <div class="stat">
+                    <div class="prediction-info">
 
-                        <small>Under 5</small>
+                        <div class="info-row">
 
-                        <b>
-                            ${
-                                analysis
-                                ? analysis.underPercent + "%"
-                                : "—"
-                            }
-                        </b>
+                            <span>
+                                Predicted digit
+                            </span>
+
+                            <b class="locked-digit">
+                                ${
+                                    analysis
+                                    ? predicted
+                                    : "Waiting"
+                                }
+                            </b>
+
+                        </div>
+
+
+                        <div class="info-row">
+
+                            <span>
+                                Confidence
+                            </span>
+
+                            <b class="confidence">
+                                ${
+                                    analysis
+                                    ? confidence + "%"
+                                    : "Waiting"
+                                }
+                            </b>
+
+                        </div>
+
+
+                        <div class="info-row">
+
+                            <span>
+                                Current digit
+                            </span>
+
+                            <b class="live-digit">
+                                ${
+                                    data.lastDigit === null
+                                    ? "—"
+                                    : data.lastDigit
+                                }
+                            </b>
+
+                        </div>
+
+
+                        <div class="info-row">
+
+                            <span>
+                                Tick sample
+                            </span>
+
+                            <b>
+                                ${data.ticks.length}
+                            </b>
+
+                        </div>
+
+
+                        <div class="info-row">
+
+                            <span>
+                                Prediction state
+                            </span>
+
+                            <b>
+                                ${
+                                    locked
+                                    ? "LOCKED"
+                                    : "WAITING"
+                                }
+                            </b>
+
+                        </div>
 
                     </div>
 
 
-                    <div class="stat">
+                    <div class="stats-grid">
 
-                        <small>Last Price</small>
+                        <div class="stat matches">
 
-                        <b>
-                            ${
-                                data.lastPrice === null
-                                ? "—"
-                                : Number(data.lastPrice)
-                                .toFixed(
-                                    data.pipSize || 2
-                                )
-                            }
-                        </b>
+                            <small>
+                                Matches
+                            </small>
 
-                    </div>
+                            <b>
+                                ${
+                                    analysis
+                                    ? matches + "%"
+                                    : "—"
+                                }
+                            </b>
+
+                        </div>
 
 
-                    <div class="stat">
+                        <div class="stat differs">
 
-                        <small>Top Signal</small>
+                            <small>
+                                Differs
+                            </small>
 
-                        <b>
-                            ${
-                                analysis
+                            <b>
+                                ${
+                                    analysis
+                                    ? differs + "%"
+                                    : "—"
+                                }
+                            </b>
+
+                        </div>
+
+
+                        <div class="stat">
+
+                            <small>
+                                Even
+                            </small>
+
+                            <b>
+                                ${
+                                    analysis
+                                    ? analysis.evenPercent + "%"
+                                    : "—"
+                                }
+                            </b>
+
+                        </div>
+
+
+                        <div class="stat">
+
+                            <small>
+                                Odd
+                            </small>
+
+                            <b>
+                                ${
+                                    analysis
+                                    ? analysis.oddPercent + "%"
+                                    : "—"
+                                }
+                            </b>
+
+                        </div>
+
+
+                        <div class="stat">
+
+                            <small>
+                                Over 4
+                            </small>
+
+                            <b>
+                                ${
+                                    analysis
+                                    ? analysis.overPercent + "%"
+                                    : "—"
+                                }
+                            </b>
+
+                        </div>
+
+
+                        <div class="stat">
+
+                            <small>
+                                Under 5
+                            </small>
+
+                            <b>
+                                ${
+                                    analysis
+                                    ? analysis.underPercent + "%"
+                                    : "—"
+                                }
+                            </b>
+
+                        </div>
+
+
+                        <div class="stat">
+
+                            <small>
+                                Last Price
+                            </small>
+
+                            <b>
+                                ${
+                                    data.lastPrice === null
+                                    ? "—"
+                                    : Number(
+                                        data.lastPrice
+                                    ).toFixed(
+                                        data.pipSize || 2
+                                    )
+                                }
+                            </b>
+
+                        </div>
+
+
+                        <div class="stat">
+
+                            <small>
+                                Top Signal
+                            </small>
+
+                            <b>
+                                ${
+                                    analysis
                                     ? "#" +
                                       analysis.ranked[0].digit
                                     : "—"
+                                }
+                            </b>
+
+                        </div>
+
+
+                        <div class="stat">
+
+                            <small>
+                                Sample
+                            </small>
+
+                            <b>
+                                ${
+                                    analysis
+                                    ? analysis.sample
+                                    : "—"
+                                }
+                            </b>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="digits">
+
+                        ${
+                            digitScores
+                            .map(
+                                (score,digit) => `
+
+                                <div class="
+                                    digit
+                                    ${
+                                        analysis &&
+                                        digit === predicted
+                                        ? "active"
+                                        : ""
+                                    }
+                                ">
+
+                                    ${digit}
+
+                                    <b>
+                                        ${score}%
+                                    </b>
+
+                                </div>
+
+                                `
+                            )
+                            .join("")
+                        }
+
+                    </div>
+
+
+                    <div class="analysis-footer">
+
+                        <span>
+                            Live ticks
+                        </span>
+
+                        <span>
+
+                            ${
+                                locked
+                                ? "Prediction locked"
+                                : "Collecting data"
                             }
-                        </b>
+
+                        </span>
 
                     </div>
 
                 </div>
 
+                `;
 
-                <div class="digits">
-
-                    ${
-                        digitScores
-                        .map(
-                            (score,digit) => `
-
-                            <div class="
-                                digit
-                                ${
-                                    analysis &&
-                                    digit === predicted
-                                    ? "active"
-                                    : ""
-                                }
-                            ">
-
-                                ${digit}
-
-                                <b>
-                                    ${score}%
-                                </b>
-
-                            </div>
-
-                            `
-                        )
-                        .join("")
-                    }
-
-                </div>
-
-
-                <div class="analysis-footer">
-
-                    <span>
-                        Live ticks
-                    </span>
-
-                    <span>
-                        ${
-                            analysis
-                                ? "Analysis active"
-                                : "Collecting data"
-                        }
-                    </span>
-
-                </div>
-
-            </div>
-
-            `;
-
-        })
+            }
+        )
         .join("");
 
 }
 
+
+/* =========================================================
+   DIGIT COLOR
+========================================================= */
 
 function getColor(digit){
 
@@ -1789,95 +3063,250 @@ function getColor(digit){
 }
 
 
-function setStatus(live,text){
+/* =========================================================
+   CONNECTION STATUS
+========================================================= */
+
+function setStatus(
+    live,
+    text
+){
 
     const dot =
-        document.getElementById("statusDot");
+        document.getElementById(
+            "statusDot"
+        );
+
 
     dot.classList.toggle(
         "live",
         live
     );
 
-    document.getElementById(
+
+    document
+    .getElementById(
         "statusText"
-    ).textContent = text;
+    )
+    .textContent =
+        text;
 
 }
 
+
+/* =========================================================
+   RECONNECT
+========================================================= */
 
 function scheduleReconnect(){
 
-    clearTimeout(reconnectTimer);
+    clearTimeout(
+        reconnectTimer
+    );
+
 
     reconnectTimer =
-        setTimeout(() => {
+        setTimeout(
+            () => {
 
-            if(!manuallyClosed){
+                if(
+                    !manuallyClosed
+                ){
 
-                connect();
+                    connect();
 
-            }
+                }
 
-        },
-        CONFIG.reconnectDelay
-    );
+            },
+            CONFIG.reconnectDelay
+        );
 
 }
 
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
 
 function escapeHTML(value){
 
     return String(value)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
 
 
-setInterval(() => {
+/* =========================================================
+   EXACT ONE-SECOND COUNTDOWN ENGINE
+========================================================= */
 
-    Object.values(marketData)
-    .forEach(data => {
+/*
+   The prediction still expires from the exact
+   cycleEndsAt timestamp.
 
-        if(
-            data.nextAnalysis > 0
-        ){
+   The display is refreshed frequently so the
+   visible value moves cleanly:
 
-            data.nextAnalysis--;
+   20
+   19
+   18
+   17
+   ...
+   2
+   1
+   0
+   20
+
+   The prediction itself remains locked until
+   the exact expiration timestamp.
+*/
+
+setInterval(
+    () => {
+
+        const now =
+            Date.now();
+
+
+        Object
+        .values(marketData)
+        .forEach(
+            data => {
+
+                /*
+                 First prediction.
+                */
+
+                if(
+                    data.ticks.length >=
+                    CONFIG.minimumTicks &&
+                    !data.predictionLocked
+                ){
+
+                    createNewPrediction(
+                        data
+                    );
+
+                    return;
+
+                }
+
+
+                /*
+                 Locked prediction countdown.
+                */
+
+                if(
+                    data.predictionLocked
+                ){
+
+                    const remainingMs =
+                        Math.max(
+                            0,
+                            data.cycleEndsAt -
+                            now
+                        );
+
+
+                    /*
+                     CEIL gives the exact visible
+                     second sequence.
+
+                     20 → 19 → 18 → ... → 1 → 0
+                    */
+
+                    const remainingSeconds =
+                        Math.ceil(
+                            remainingMs / 1000
+                        );
+
+
+                    data.nextAnalysis =
+                        remainingSeconds;
+
+
+                    /*
+                     Exact expiration.
+                    */
+
+                    if(
+                        remainingMs <= 0
+                    ){
+
+                        data.predictionLocked =
+                            false;
+
+
+                        data.nextAnalysis =
+                            0;
+
+
+                        if(
+                            data.ticks.length >=
+                            CONFIG.minimumTicks
+                        ){
+
+                            createNewPrediction(
+                                data
+                            );
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+
+        if(markets.length){
+
+            renderCards();
 
         }
 
-    });
+    },
+
+    /*
+     Refresh often enough to ensure the
+     one-second display never depends on
+     browser rendering happening exactly
+     once per second.
+    */
+
+    100
+
+);
 
 
-    Object.values(marketData)
-    .forEach(data => {
-
-        if(
-            data.ticks.length >=
-            CONFIG.minimumTicks &&
-            data.nextAnalysis <= 0
-        ){
-
-            calculateAnalysis(data);
-
-        }
-
-    });
-
-
-    if(markets.length){
-
-        renderCards();
-
-    }
-
-},1000);
-
+/* =========================================================
+   INITIAL STATE
+========================================================= */
 
 setStatus(
     false,
