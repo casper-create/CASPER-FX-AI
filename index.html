@@ -39,6 +39,141 @@ body{
     overflow-x:hidden
 }
 
+/* =========================================================
+   PRIVATE ACCESS SCREEN
+========================================================= */
+
+#casperLockScreen{
+    position:fixed;
+    inset:0;
+    z-index:999999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+        radial-gradient(
+            circle at 50% 35%,
+            rgba(139,92,246,.12),
+            transparent 40%
+        ),
+        #050814;
+    padding:20px;
+}
+
+.lock-card{
+    width:min(420px,100%);
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:22px;
+    padding:34px 26px;
+    text-align:center;
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.55),
+        0 0 40px rgba(59,130,246,.08);
+}
+
+.lock-target{
+    width:64px;
+    height:64px;
+    margin:0 auto 18px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(
+        135deg,
+        var(--blue),
+        var(--purple),
+        var(--pink)
+    );
+    font-size:30px;
+    box-shadow:0 0 30px rgba(139,92,246,.3);
+}
+
+.lock-logo{
+    font-size:28px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.lock-subtitle{
+    margin-top:7px;
+    margin-bottom:26px;
+    color:var(--muted);
+    font-size:13px;
+}
+
+.lock-label{
+    display:block;
+    text-align:left;
+    color:var(--muted);
+    font-size:10px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.8px;
+    margin-bottom:7px;
+}
+
+#casperPassword{
+    width:100%;
+    padding:14px 15px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:var(--card2);
+    color:#fff;
+    outline:none;
+    font-size:14px;
+    margin-bottom:12px;
+}
+
+#casperPassword:focus{
+    border-color:var(--blue);
+    box-shadow:0 0 0 3px rgba(59,130,246,.10);
+}
+
+.lock-button{
+    width:100%;
+    padding:14px;
+    border:0;
+    border-radius:10px;
+    background:linear-gradient(
+        135deg,
+        var(--pink),
+        #be185d
+    );
+    color:#fff;
+    font-weight:900;
+    cursor:pointer;
+    transition:transform .15s,opacity .15s;
+}
+
+.lock-button:hover{
+    opacity:.92;
+}
+
+.lock-button:active{
+    transform:scale(.98);
+}
+
+#casperLockError{
+    min-height:20px;
+    margin-top:12px;
+    color:#fca5a5;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.lock-note{
+    margin-top:18px;
+    color:#596477;
+    font-size:10px;
+    line-height:1.5;
+}
+
+/* =========================================================
+   APPLICATION
+========================================================= */
+
 .app{
     width:100%;
     max-width:1200px;
@@ -178,6 +313,72 @@ body{
 
 .summary-card b{
     font-size:20px;
+}
+
+.validation-panel{
+    background:linear-gradient(
+        135deg,
+        rgba(59,130,246,.08),
+        rgba(139,92,246,.06)
+    );
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:16px;
+    margin-bottom:25px;
+}
+
+.validation-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+}
+
+.validation-title{
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:.8px;
+    color:#a78bfa;
+}
+
+.validation-live{
+    font-size:10px;
+    color:var(--green);
+    font-weight:bold;
+}
+
+.validation-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+
+.validation-stat{
+    background:var(--card2);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:11px;
+}
+
+.validation-stat small{
+    display:block;
+    color:var(--muted);
+    font-size:9px;
+    text-transform:uppercase;
+    margin-bottom:5px;
+}
+
+.validation-stat b{
+    font-size:15px;
+}
+
+.validation-stat.match b{
+    color:var(--green);
+}
+
+.validation-stat.differ b{
+    color:#fca5a5;
 }
 
 .cards{
@@ -382,6 +583,21 @@ body{
     font-weight:900;
 }
 
+.observed-match{
+    color:var(--green);
+    font-weight:900;
+}
+
+.observed-differ{
+    color:#fca5a5;
+    font-weight:900;
+}
+
+.observed-none{
+    color:var(--muted);
+    font-weight:bold;
+}
+
 .progress{
     height:6px;
     background:#050814;
@@ -508,8 +724,13 @@ body{
     text-align:center;
 }
 
-@media(max-width:600px){
+@media(max-width:700px){
+    .validation-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
 
+@media(max-width:600px){
     .app{
         padding:14px
     }
@@ -544,28 +765,97 @@ body{
 
 <body>
 
+<!-- =========================================================
+     PRIVATE PASSWORD GATE
+========================================================= -->
+
+<div id="casperLockScreen">
+
+    <div class="lock-card">
+
+        <div class="lock-target">
+            🎯
+        </div>
+
+        <div class="lock-logo">
+            CASPER FX
+        </div>
+
+        <div class="lock-subtitle">
+            Private Access
+        </div>
+
+        <label
+            class="lock-label"
+            for="casperPassword">
+            Access Password
+        </label>
+
+        <input
+            type="password"
+            id="casperPassword"
+            placeholder="@Jaslinmaina32$"
+            autocomplete="off"
+            spellcheck="false"
+        >
+
+        <button
+            class="lock-button"
+            id="unlockCasperBtn">
+            UNLOCK CASPER FX
+        </button>
+
+        <div id="casperLockError"></div>
+
+        <div class="lock-note">
+            Authorized access only.
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     CASPER FX APPLICATION
+========================================================= -->
+
 <div class="app">
 
 <div class="topbar">
-    <div class="logo">🎯 CASPER FX</div>
+
+    <div class="logo">
+        🎯 CASPER FX
+    </div>
 
     <div class="status">
+
         <span class="dot" id="statusDot"></span>
-        <span class="connection" id="statusText">Disconnected</span>
+
+        <span class="connection" id="statusText">
+            Disconnected
+        </span>
+
     </div>
+
 </div>
 
 <div class="header">
+
     <h1>Live Market Analysis</h1>
 
     <p>
-        Real-time volatility market monitoring and automated digit analysis.
+        Real-time volatility market monitoring and statistical digit analysis.
     </p>
+
 </div>
 
 <div class="dashboard-heading">
+
     <h2>All Predictions Dashboard</h2>
+
     <span>Matches / Digits Predictions</span>
+
 </div>
 
 <div class="controls">
@@ -581,10 +871,12 @@ body{
 </div>
 
 <p class="token-hint">
+
     This dashboard reads Deriv's public market data feed — no login,
     API token, or app registration required. Nothing you type or click
     here ever leaves your browser except the direct WebSocket connection
     to Deriv itself.
+
 </p>
 
 <div class="summary">
@@ -611,18 +903,186 @@ body{
 
 </div>
 
+<div class="validation-panel">
+
+    <div class="validation-header">
+
+        <div class="validation-title">
+            OBSERVED VALIDATION
+        </div>
+
+        <div class="validation-live" id="validationStatus">
+            MONITORING
+        </div>
+
+    </div>
+
+    <div class="validation-grid">
+
+        <div class="validation-stat">
+            <small>Evaluated</small>
+            <b id="validationEvaluated">0</b>
+        </div>
+
+        <div class="validation-stat match">
+            <small>Matches</small>
+            <b id="validationMatches">0</b>
+        </div>
+
+        <div class="validation-stat differ">
+            <small>Differs</small>
+            <b id="validationDiffers">0</b>
+        </div>
+
+        <div class="validation-stat">
+            <small>Observed Rate</small>
+            <b id="validationRate">—</b>
+        </div>
+
+    </div>
+
+</div>
+
 <div class="cards" id="cards">
 
     <div class="loading">
+
         <div class="spinner"></div>
+
         Connect to start live market analysis...
+
     </div>
 
 </div>
 
 </div>
 
+
 <script>
+
+/* =========================================================
+   CASPER FX PRIVATE ACCESS
+========================================================= */
+
+/*
+   IMPORTANT:
+   Replace ONLY the value below.
+
+   Do NOT send your real password to anyone.
+*/
+
+const CASPER_ACCESS_PASSWORD =
+    "@Jaslinmaina32$";
+
+
+const casperLockScreen =
+    document.getElementById(
+        "casperLockScreen"
+    );
+
+
+const casperPassword =
+    document.getElementById(
+        "casperPassword"
+    );
+
+
+const casperLockError =
+    document.getElementById(
+        "casperLockError"
+    );
+
+
+const unlockCasperBtn =
+    document.getElementById(
+        "unlockCasperBtn"
+    );
+
+
+function unlockCasper(){
+
+    const enteredPassword =
+        casperPassword.value;
+
+
+    if(
+        enteredPassword ===
+        CASPER_ACCESS_PASSWORD
+    ){
+
+        sessionStorage.setItem(
+            "casperUnlocked",
+            "true"
+        );
+
+
+        casperLockScreen.style.display =
+            "none";
+
+
+        casperLockError.textContent =
+            "";
+
+
+        casperPassword.value = "";
+
+
+        return;
+
+    }
+
+
+    casperLockError.textContent =
+        "Incorrect password.";
+
+
+    casperPassword.value =
+        "";
+
+
+    casperPassword.focus();
+
+}
+
+
+unlockCasperBtn.addEventListener(
+    "click",
+    unlockCasper
+);
+
+
+casperPassword.addEventListener(
+    "keydown",
+    event => {
+
+        if(
+            event.key === "Enter"
+        ){
+
+            unlockCasper();
+
+        }
+
+    }
+);
+
+
+/*
+   If this browser tab has already been
+   authenticated, don't show the gate again.
+*/
+
+if(
+    sessionStorage.getItem(
+        "casperUnlocked"
+    ) === "true"
+){
+
+    casperLockScreen.style.display =
+        "none";
+
+}
+
 
 /* =========================================================
    CASPER FX CONFIGURATION
@@ -645,8 +1105,17 @@ const CONFIG = {
 
     reconnectDelay:3000,
 
-    /* LOCKED PREDICTION CYCLE */
-    predictionCycleSeconds:20
+    predictionCycleSeconds:20,
+
+    watchdogTimeout:15000,
+
+    watchdogInterval:5000,
+
+    historicalValidationPoints:50,
+
+    historicalMinimumHistory:30,
+
+    historicalRecalculateTicks:10
 
 };
 
@@ -656,12 +1125,32 @@ const CONFIG = {
 ========================================================= */
 
 let ws = null;
+
 let markets = [];
+
 let marketData = {};
+
 let manuallyClosed = false;
+
 let reconnectTimer = null;
+
+let watchdogTimer = null;
+
 let totalTicks = 0;
+
 let subscribedSymbols = new Set();
+
+let lastGlobalTickTime = 0;
+
+const validation = {
+
+    evaluated:0,
+
+    matches:0,
+
+    differs:0
+
+};
 
 const cards =
     document.getElementById("cards");
@@ -690,15 +1179,22 @@ document
 
     clearTimeout(reconnectTimer);
 
+    stopWatchdog();
+
     if(ws){
-        ws.close();
+
+        try{
+            ws.close();
+        }catch(error){}
+
     }
 
     setStatus(false,"Disconnected");
 
     document
     .getElementById("connectionState")
-    .textContent = "Disconnected";
+    .textContent =
+        "Disconnected";
 
 });
 
@@ -716,7 +1212,9 @@ function connect(){
             ws.readyState === WebSocket.CONNECTING
         )
     ){
+
         return;
+
     }
 
     clearTimeout(reconnectTimer);
@@ -727,13 +1225,13 @@ function connect(){
 
     document
     .getElementById("connectionState")
-    .textContent = "Connecting";
+    .textContent =
+        "Connecting";
 
     ws =
         new WebSocket(
             CONFIG.websocket
         );
-
 
     ws.onopen = () => {
 
@@ -741,7 +1239,13 @@ function connect(){
 
         document
         .getElementById("connectionState")
-        .textContent = "Connected";
+        .textContent =
+            "Connected";
+
+        lastGlobalTickTime =
+            Date.now();
+
+        startWatchdog();
 
         requestMarkets();
 
@@ -783,19 +1287,114 @@ function connect(){
 
         document
         .getElementById("subscriptionCount")
-        .textContent = "0";
+        .textContent =
+            "0";
+
+        stopWatchdog();
 
         setStatus(false,"Disconnected");
 
         document
         .getElementById("connectionState")
-        .textContent = "Disconnected";
+        .textContent =
+            "Disconnected";
 
         if(!manuallyClosed){
+
             scheduleReconnect();
+
         }
 
     };
+
+}
+
+
+/* =========================================================
+   WATCHDOG
+========================================================= */
+
+function startWatchdog(){
+
+    stopWatchdog();
+
+    watchdogTimer =
+        setInterval(
+            () => {
+
+                if(
+                    manuallyClosed ||
+                    !ws ||
+                    ws.readyState !== WebSocket.OPEN
+                ){
+
+                    return;
+
+                }
+
+                if(!lastGlobalTickTime){
+
+                    return;
+
+                }
+
+                const silence =
+                    Date.now() -
+                    lastGlobalTickTime;
+
+                if(
+                    silence >
+                    CONFIG.watchdogTimeout
+                ){
+
+                    console.warn(
+                        "CASPER FX WATCHDOG: stale market feed detected."
+                    );
+
+                    setStatus(
+                        false,
+                        "Feed stale — reconnecting"
+                    );
+
+                    document
+                    .getElementById(
+                        "connectionState"
+                    )
+                    .textContent =
+                        "Reconnecting";
+
+                    try{
+
+                        ws.close();
+
+                    }catch(error){
+
+                        scheduleReconnect();
+
+                    }
+
+                }
+
+            },
+
+            CONFIG.watchdogInterval
+
+        );
+
+}
+
+
+function stopWatchdog(){
+
+    if(watchdogTimer){
+
+        clearInterval(
+            watchdogTimer
+        );
+
+        watchdogTimer = null;
+
+    }
 
 }
 
@@ -811,11 +1410,19 @@ function send(payload){
         ws.readyState === WebSocket.OPEN
     ){
 
-        ws.send(
-            JSON.stringify(payload)
-        );
+        try{
 
-        return true;
+            ws.send(
+                JSON.stringify(payload)
+            );
+
+            return true;
+
+        }catch(error){
+
+            return false;
+
+        }
 
     }
 
@@ -860,11 +1467,6 @@ function requestMarkets(){
 
 function handleMessage(data){
 
-    console.log(
-        "CASPER FX DERIV RESPONSE:",
-        data
-    );
-
     if(data.error){
 
         console.error(
@@ -876,7 +1478,9 @@ function handleMessage(data){
 
             <div class="error-box">
 
-                <strong>Deriv API Error</strong>
+                <strong>
+                    Deriv API Error
+                </strong>
 
                 <br>
 
@@ -895,7 +1499,8 @@ function handleMessage(data){
 
         document
         .getElementById("connectionState")
-        .textContent = "API Error";
+        .textContent =
+            "API Error";
 
         return;
 
@@ -910,18 +1515,6 @@ function handleMessage(data){
         type === "active_symbols" ||
         data.active_symbols
     ){
-
-        console.log(
-            "CASPER FX RAW active_symbols RESPONSE:",
-            JSON.stringify(data)
-        );
-
-        console.log(
-            "CASPER FX ACTIVE SYMBOL COUNT:",
-            Array.isArray(data.active_symbols)
-            ? data.active_symbols.length
-            : "N/A"
-        );
 
         processMarkets(
             data.active_symbols || []
@@ -945,12 +1538,6 @@ function handleMessage(data){
 
     }
 
-
-    console.log(
-        "CASPER FX UNHANDLED DERIV RESPONSE:",
-        data
-    );
-
 }
 
 
@@ -960,9 +1547,7 @@ function handleMessage(data){
 
 function pick(item,keys){
 
-    for(
-        const key of keys
-    ){
+    for(const key of keys){
 
         if(
             item[key] !== undefined &&
@@ -985,11 +1570,6 @@ function pick(item,keys){
 ========================================================= */
 
 function processMarkets(symbols){
-
-    console.log(
-        "ALL MARKETS RETURNED:",
-        symbols
-    );
 
     if(
         !Array.isArray(symbols) ||
@@ -1021,6 +1601,7 @@ function processMarkets(symbols){
                     ]
                 ) || "";
 
+
             const nameRaw =
                 pick(
                     item,
@@ -1031,15 +1612,13 @@ function processMarkets(symbols){
                     ]
                 ) || "";
 
+
             const symbol =
-                String(
-                    symbolRaw
-                ).toUpperCase();
+                String(symbolRaw).toUpperCase();
+
 
             const name =
-                String(
-                    nameRaw
-                ).toLowerCase();
+                String(nameRaw).toLowerCase();
 
 
             return (
@@ -1077,12 +1656,6 @@ function processMarkets(symbols){
         });
 
 
-    console.log(
-        "VOLATILITY MARKETS FOUND:",
-        found
-    );
-
-
     markets =
         found
         .map(item => {
@@ -1095,6 +1668,7 @@ function processMarkets(symbols){
                         "underlying_symbol"
                     ]
                 );
+
 
             const name =
                 pick(
@@ -1125,7 +1699,7 @@ function processMarkets(symbols){
         markets.length;
 
 
-    if(markets.length === 0){
+    if(!markets.length){
 
         cards.innerHTML = `
 
@@ -1143,51 +1717,128 @@ function processMarkets(symbols){
     }
 
 
-    markets.forEach(market => {
+    markets.forEach(
+        market => {
 
-        marketData[
-            market.symbol
-        ] = {
+            if(
+                !marketData[
+                    market.symbol
+                ]
+            ){
 
-            symbol:
-                market.symbol,
+                marketData[
+                    market.symbol
+                ] =
+                    createMarketState(
+                        market
+                    );
 
-            name:
-                market.name,
+            }else{
 
-            ticks:[],
+                marketData[
+                    market.symbol
+                ].name =
+                    market.name;
 
-            lastDigit:null,
-
-            lastPrice:null,
-
-            pipSize:null,
-
-            analysis:null,
-
-            predictionLocked:false,
-
-            nextAnalysis:0,
-
-            cycleEndsAt:0
-
-        };
+            }
 
 
-        subscribeToMarket(
-            market.symbol
-        );
+            subscribeToMarket(
+                market.symbol
+            );
 
-    });
+        }
+    );
 
 
     renderCards();
 
 
     console.log(
-        "SUCCESS — VOLATILITY MARKETS:",
-        markets
+        "CASPER FX MARKETS ACTIVE:",
+        markets.length
     );
+
+}
+
+
+/* =========================================================
+   MARKET STATE
+========================================================= */
+
+function createMarketState(market){
+
+    return {
+
+        symbol:
+            market.symbol,
+
+        name:
+            market.name,
+
+        ticks:[],
+
+        lastDigit:null,
+
+        lastPrice:null,
+
+        pipSize:null,
+
+        analysis:null,
+
+        predictionLocked:false,
+
+        nextAnalysis:0,
+
+        cycleEndsAt:0,
+
+        countdownDisplay:0,
+
+        countdownLastUpdate:0,
+
+        countdownNextStepAt:0,
+
+        cycleExpired:false,
+
+        pendingValidation:null,
+
+        lastValidation:null,
+
+        validation:{
+
+            evaluated:0,
+
+            matches:0,
+
+            differs:0
+
+        },
+
+        historicalValidation:{
+
+            evaluated:0,
+
+            matches:0,
+
+            differs:0,
+
+            matchRate:null,
+
+            differsRate:null,
+
+            sampleSize:0,
+
+            lastUpdated:0,
+
+            lastTickCount:0,
+
+            lastTickEpoch:0
+
+        },
+
+        lastTickTime:0
+
+    };
 
 }
 
@@ -1223,10 +1874,9 @@ function subscribeToMarket(symbol){
             symbol
         );
 
+
         document
-        .getElementById(
-            "subscriptionCount"
-        )
+        .getElementById("subscriptionCount")
         .textContent =
             subscribedSymbols.size;
 
@@ -1242,7 +1892,9 @@ function subscribeToMarket(symbol){
 function processTick(tick){
 
     if(!tick){
+
         return;
+
     }
 
 
@@ -1255,7 +1907,9 @@ function processTick(tick){
 
 
     if(!data){
+
         return;
+
     }
 
 
@@ -1268,7 +1922,9 @@ function processTick(tick){
     if(
         !Number.isFinite(price)
     ){
+
         return;
+
     }
 
 
@@ -1287,6 +1943,10 @@ function processTick(tick){
         );
 
 
+    const now =
+        Date.now();
+
+
     data.lastPrice =
         price;
 
@@ -1295,6 +1955,13 @@ function processTick(tick){
 
     data.pipSize =
         pipSize;
+
+    data.lastTickTime =
+        now;
+
+
+    lastGlobalTickTime =
+        now;
 
 
     data.ticks.push({
@@ -1305,7 +1972,7 @@ function processTick(tick){
 
         epoch:
             Number(tick.epoch) ||
-            Date.now()/1000
+            now / 1000
 
     });
 
@@ -1329,15 +1996,27 @@ function processTick(tick){
         totalTicks;
 
 
-    /*
-     Live data continues updating,
-     but the locked prediction does not.
-    */
+    if(
+        data.pendingValidation &&
+        now >=
+        data.pendingValidation.expiresAt
+    ){
+
+        evaluatePrediction(
+            data,
+            digit,
+            now
+        );
+
+    }
+
 
     if(
         data.ticks.length >=
         CONFIG.minimumTicks &&
-        !data.predictionLocked
+        !data.predictionLocked &&
+        !data.pendingValidation &&
+        !data.cycleExpired
     ){
 
         createNewPrediction(
@@ -1348,6 +2027,141 @@ function processTick(tick){
 
 
     renderCards();
+
+}
+
+
+/* =========================================================
+   OBSERVED VALIDATION
+========================================================= */
+
+function evaluatePrediction(
+    data,
+    observedDigit,
+    now
+){
+
+    const pending =
+        data.pendingValidation;
+
+
+    if(!pending){
+
+        return;
+
+    }
+
+
+    const predictedDigit =
+        pending.predictedDigit;
+
+
+    const match =
+        predictedDigit ===
+        observedDigit;
+
+
+    validation.evaluated++;
+
+    data.validation.evaluated++;
+
+
+    if(match){
+
+        validation.matches++;
+
+        data.validation.matches++;
+
+    }else{
+
+        validation.differs++;
+
+        data.validation.differs++;
+
+    }
+
+
+    data.lastValidation = {
+
+        predicted:
+            predictedDigit,
+
+        observed:
+            observedDigit,
+
+        match:match,
+
+        at:now
+
+    };
+
+
+    data.pendingValidation =
+        null;
+
+
+    updateValidationPanel();
+
+
+    console.log(
+        "CASPER FX OBSERVED VALIDATION:",
+        data.symbol,
+        "PREDICTED:",
+        predictedDigit,
+        "OBSERVED:",
+        observedDigit,
+        match
+        ? "MATCH"
+        : "DIFFER"
+    );
+
+}
+
+
+/* =========================================================
+   UPDATE VALIDATION PANEL
+========================================================= */
+
+function updateValidationPanel(){
+
+    const evaluated =
+        validation.evaluated;
+
+
+    document
+    .getElementById("validationEvaluated")
+    .textContent =
+        evaluated;
+
+
+    document
+    .getElementById("validationMatches")
+    .textContent =
+        validation.matches;
+
+
+    document
+    .getElementById("validationDiffers")
+    .textContent =
+        validation.differs;
+
+
+    const rate =
+        evaluated > 0
+        ? Math.round(
+            validation.matches /
+            evaluated *
+            100
+        )
+        : null;
+
+
+    document
+    .getElementById("validationRate")
+    .textContent =
+        rate === null
+        ? "—"
+        : rate + "%";
 
 }
 
@@ -1411,14 +2225,18 @@ function getLastDigit(
 function createNewPrediction(data){
 
     const analysis =
-        calculateAnalysis(
-            data
-        );
+        calculateAnalysis(data);
 
 
     if(!analysis){
-        return;
+
+        return false;
+
     }
+
+
+    const now =
+        Date.now();
 
 
     data.analysis =
@@ -1429,17 +2247,47 @@ function createNewPrediction(data){
         true;
 
 
+    data.cycleExpired =
+        false;
+
+
     /*
-     EXACT 20 SECOND LOCK
+     FIXED 20-SECOND CYCLE
+
+     This section remains unchanged.
     */
+
+    data.cycleEndsAt =
+        now +
+        CONFIG.predictionCycleSeconds *
+        1000;
+
+
+    data.countdownDisplay =
+        CONFIG.predictionCycleSeconds;
+
+
+    data.countdownLastUpdate =
+        now;
+
+
+    data.countdownNextStepAt =
+        now + 1000;
+
 
     data.nextAnalysis =
         CONFIG.predictionCycleSeconds;
 
 
-    data.cycleEndsAt =
-        Date.now() +
-        CONFIG.predictionCycleSeconds * 1000;
+    data.pendingValidation = {
+
+        predictedDigit:
+            analysis.predictedDigit,
+
+        expiresAt:
+            data.cycleEndsAt
+
+    };
 
 
     console.log(
@@ -1447,21 +2295,28 @@ function createNewPrediction(data){
         data.symbol,
         "DIGIT:",
         analysis.predictedDigit,
-        "MATCHES:",
-        analysis.matches + "%",
-        "DIFFERS:",
-        analysis.differs + "%",
         "CONFIDENCE:",
         analysis.confidence + "%",
-        "CYCLE:",
-        CONFIG.predictionCycleSeconds + "s"
+        "HISTORICAL MATCH:",
+        analysis.historicalMatchRate === null
+            ? "CALIBRATING"
+            : analysis.historicalMatchRate + "%",
+        "GATE:",
+        analysis.gateLevel,
+        "DEADLINE:",
+        new Date(
+            data.cycleEndsAt
+        ).toLocaleTimeString()
     );
+
+
+    return true;
 
 }
 
 
 /* =========================================================
-   IMPROVED ANALYSIS ENGINE
+   MAIN ANALYSIS ENGINE
 ========================================================= */
 
 function calculateAnalysis(data){
@@ -1498,23 +2353,9 @@ function calculateAnalysis(data){
         );
 
 
-    /*
-     Each digit receives an ensemble score.
-
-     The score is deliberately based on several
-     different observations rather than one
-     frequency calculation.
-    */
-
     const scores =
         Array(10).fill(0);
 
-
-    /*
-     1. Multi-window frequency.
-
-     Recent data gets the largest influence.
-    */
 
     addFrequencyScores(
         scores,
@@ -1537,27 +2378,11 @@ function calculateAnalysis(data){
     );
 
 
-    /*
-     2. Recency.
-
-     Recent observations receive additional
-     influence, but the effect is deliberately
-     limited so one or two ticks cannot dominate.
-    */
-
     addImprovedRecencyScore(
         scores,
         shortTicks
     );
 
-
-    /*
-     3. Transition behaviour.
-
-     We inspect what tends to follow recent
-     digits, giving more weight to recent
-     transitions.
-    */
 
     addImprovedTransitionScores(
         scores,
@@ -1565,27 +2390,11 @@ function calculateAnalysis(data){
     );
 
 
-    /*
-     4. Streak behaviour.
-
-     A streak is considered, but its influence
-     is capped so it cannot overpower the
-     broader distribution.
-    */
-
     addImprovedStreakScores(
         scores,
         ticks
     );
 
-
-    /*
-     5. Recent-vs-long-term agreement.
-
-     If a digit is supported by both the recent
-     and broader samples, it receives a modest
-     agreement bonus.
-    */
 
     addWindowAgreementScore(
         scores,
@@ -1595,21 +2404,24 @@ function calculateAnalysis(data){
     );
 
 
+    addDistributionStabilityScore(
+        scores,
+        shortTicks,
+        mediumTicks,
+        longTicks
+    );
+
+
     const normalized =
-        normalizeScores(
-            scores
-        );
+        normalizeScores(scores);
 
 
     const ranked =
         normalized
         .map(
             (score,digit) => ({
-
                 digit,
-
                 score
-
             })
         )
         .sort(
@@ -1637,24 +2449,15 @@ function calculateAnalysis(data){
 
 
     if(!ranked.length){
+
         return null;
+
     }
 
 
     const predictedDigit =
         ranked[0].digit;
 
-
-    /*
-     Confidence is based on:
-
-     - separation between the top two digits
-     - sample size
-     - agreement between analytical windows
-
-     It is not allowed to become artificially
-     high simply because a number was selected.
-    */
 
     const agreement =
         calculateSignalAgreement(
@@ -1665,17 +2468,87 @@ function calculateAnalysis(data){
         );
 
 
-    const confidence =
-        calculateImprovedConfidence(
-            ranked,
-            ticks.length,
-            agreement
+    const entropy =
+        calculateEntropy(
+            longTicks
         );
 
 
-    /*
-     Even / Odd remains historical statistics.
-    */
+    const stability =
+        calculateMarketStability(
+            shortTicks,
+            mediumTicks,
+            longTicks
+        );
+
+
+    const separation =
+        calculateTopSeparation(
+            ranked
+        );
+
+
+    const sampleQuality =
+        calculateSampleQuality(
+            ticks.length
+        );
+
+
+    const consensus =
+        calculateDigitConsensus(
+            shortTicks,
+            mediumTicks,
+            longTicks,
+            predictedDigit
+        );
+
+
+    const dataQuality =
+        calculateDataQuality(data);
+
+
+    const rawConfidence =
+        calculateBackgroundConfidence({
+
+            agreement,
+
+            entropy,
+
+            stability,
+
+            separation,
+
+            sampleQuality,
+
+            consensus,
+
+            dataQuality
+
+        });
+
+
+    const historicalValidation =
+        calculateHistoricalValidation(data);
+
+
+    const historicalCalibration =
+        calculateHistoricalCalibration(
+            historicalValidation
+        );
+
+
+    const confidence =
+        Math.round(
+            rawConfidence * 0.75 +
+            historicalCalibration * 0.25
+        );
+
+
+    const gateLevel =
+        getConfidenceGateLevel(
+            confidence
+        );
+
 
     const even =
         ticks.filter(
@@ -1689,10 +2562,6 @@ function calculateAnalysis(data){
         even;
 
 
-    /*
-     Over / Under remains historical statistics.
-    */
-
     const over =
         ticks.filter(
             item =>
@@ -1705,23 +2574,31 @@ function calculateAnalysis(data){
         over;
 
 
-    /*
-     Matches/Differs remain tied to the
-     LOCKED predicted digit.
-
-     They are statistical model percentages,
-     not guarantees of the next tick.
-    */
-
-    const matches =
-        normalized[
-            predictedDigit
-        ];
+    const modelMatchScore =
+        normalized[predictedDigit];
 
 
-    const differs =
+    const modelDiffersScore =
         100 -
-        matches;
+        modelMatchScore;
+
+
+    const historicalMatchRate =
+        historicalValidation.matchRate !== null
+        ? Math.round(
+            historicalValidation.matchRate *
+            100
+        )
+        : null;
+
+
+    const historicalDiffersRate =
+        historicalValidation.differsRate !== null
+        ? Math.round(
+            historicalValidation.differsRate *
+            100
+        )
+        : null;
 
 
     return {
@@ -1730,9 +2607,29 @@ function calculateAnalysis(data){
 
         confidence,
 
-        matches,
+        rawConfidence,
 
-        differs,
+        gateLevel,
+
+        historicalMatchRate,
+
+        historicalDiffersRate,
+
+        historicalEvaluated:
+            historicalValidation.evaluated,
+
+        historicalMatches:
+            historicalValidation.matches,
+
+        historicalDiffers:
+            historicalValidation.differs,
+
+        historicalSample:
+            historicalValidation.sampleSize,
+
+        modelMatchScore,
+
+        modelDiffersScore,
 
         scores:normalized,
 
@@ -1770,12 +2667,432 @@ function calculateAnalysis(data){
             ticks.length,
 
         signalAgreement:
-            agreement,
+            Math.round(
+                agreement * 100
+            ),
+
+        entropy:
+            Math.round(
+                entropy * 100
+            ),
+
+        stability:
+            Math.round(
+                stability * 100
+            ),
+
+        consensus:
+            Math.round(
+                consensus * 100
+            ),
+
+        dataQuality:
+            Math.round(
+                dataQuality * 100
+            ),
 
         createdAt:
             Date.now()
 
     };
+
+}
+
+
+/* =========================================================
+   WALK-FORWARD HISTORICAL VALIDATION
+========================================================= */
+
+function calculateHistoricalValidation(data){
+
+    const ticks =
+        data.ticks;
+
+
+    const currentTickCount =
+        ticks.length;
+
+
+    const lastTick =
+        ticks.length
+        ? ticks[ticks.length - 1]
+        : null;
+
+
+    const lastTickEpoch =
+        lastTick
+        ? Number(lastTick.epoch) || 0
+        : 0;
+
+
+    const cached =
+        data.historicalValidation;
+
+
+    if(
+        cached &&
+        cached.lastTickCount > 0 &&
+        currentTickCount -
+        cached.lastTickCount <
+        CONFIG.historicalRecalculateTicks &&
+        cached.lastTickEpoch === lastTickEpoch
+    ){
+
+        return cached;
+
+    }
+
+
+    const result = {
+
+        evaluated:0,
+
+        matches:0,
+
+        differs:0,
+
+        matchRate:null,
+
+        differsRate:null,
+
+        sampleSize:0,
+
+        lastUpdated:
+            Date.now(),
+
+        lastTickCount:
+            currentTickCount,
+
+        lastTickEpoch:
+            lastTickEpoch
+
+    };
+
+
+    if(
+        ticks.length <
+        CONFIG.historicalMinimumHistory + 1
+    ){
+
+        data.historicalValidation =
+            result;
+
+        return result;
+
+    }
+
+
+    const firstUsable =
+        CONFIG.historicalMinimumHistory;
+
+
+    const available =
+        ticks.length -
+        firstUsable;
+
+
+    const evaluations =
+        Math.min(
+            CONFIG.historicalValidationPoints,
+            available
+        );
+
+
+    const startIndex =
+        ticks.length -
+        evaluations;
+
+
+    for(
+        let i = startIndex;
+        i < ticks.length;
+        i++
+    ){
+
+        const historicalPrefix =
+            ticks.slice(
+                0,
+                i
+            );
+
+
+        const candidate =
+            calculateHistoricalCandidate(
+                historicalPrefix
+            );
+
+
+        if(
+            !candidate ||
+            !Number.isInteger(
+                ticks[i].digit
+            )
+        ){
+
+            continue;
+
+        }
+
+
+        result.evaluated++;
+
+
+        if(
+            candidate.predictedDigit ===
+            ticks[i].digit
+        ){
+
+            result.matches++;
+
+        }else{
+
+            result.differs++;
+
+        }
+
+    }
+
+
+    result.sampleSize =
+        result.evaluated;
+
+
+    if(
+        result.evaluated > 0
+    ){
+
+        result.matchRate =
+            result.matches /
+            result.evaluated;
+
+
+        result.differsRate =
+            result.differs /
+            result.evaluated;
+
+    }
+
+
+    data.historicalValidation =
+        result;
+
+
+    return result;
+
+}
+
+
+/* =========================================================
+   HISTORICAL CANDIDATE
+========================================================= */
+
+function calculateHistoricalCandidate(
+    ticks
+){
+
+    if(
+        !Array.isArray(ticks) ||
+        ticks.length <
+        CONFIG.historicalMinimumHistory
+    ){
+
+        return null;
+
+    }
+
+
+    const shortTicks =
+        ticks.slice(
+            -CONFIG.shortWindow
+        );
+
+
+    const mediumTicks =
+        ticks.slice(
+            -CONFIG.mediumWindow
+        );
+
+
+    const longTicks =
+        ticks.slice(
+            -CONFIG.longWindow
+        );
+
+
+    const scores =
+        Array(10).fill(0);
+
+
+    addFrequencyScores(
+        scores,
+        shortTicks,
+        0.45
+    );
+
+
+    addFrequencyScores(
+        scores,
+        mediumTicks,
+        0.30
+    );
+
+
+    addFrequencyScores(
+        scores,
+        longTicks,
+        0.15
+    );
+
+
+    addImprovedRecencyScore(
+        scores,
+        shortTicks
+    );
+
+
+    addImprovedTransitionScores(
+        scores,
+        ticks
+    );
+
+
+    addImprovedStreakScores(
+        scores,
+        ticks
+    );
+
+
+    addWindowAgreementScore(
+        scores,
+        shortTicks,
+        mediumTicks,
+        longTicks
+    );
+
+
+    addDistributionStabilityScore(
+        scores,
+        shortTicks,
+        mediumTicks,
+        longTicks
+    );
+
+
+    const normalized =
+        normalizeScores(scores);
+
+
+    let predictedDigit =
+        0;
+
+
+    let bestScore =
+        -Infinity;
+
+
+    normalized.forEach(
+        (score,digit) => {
+
+            if(
+                score >
+                bestScore
+            ){
+
+                bestScore =
+                    score;
+
+                predictedDigit =
+                    digit;
+
+            }
+
+        }
+    );
+
+
+    return {
+
+        predictedDigit,
+
+        score:
+            bestScore
+
+    };
+
+}
+
+
+/* =========================================================
+   HISTORICAL CONFIDENCE CALIBRATION
+========================================================= */
+
+function calculateHistoricalCalibration(
+    historical
+){
+
+    const baseline =
+        0.10;
+
+
+    if(
+        !historical ||
+        historical.evaluated < 10 ||
+        historical.matchRate === null
+    ){
+
+        return 55;
+
+    }
+
+
+    const n =
+        historical.evaluated;
+
+
+    const matches =
+        historical.matches;
+
+
+    const alpha =
+        1;
+
+
+    const beta =
+        9;
+
+
+    const posterior =
+        (
+            matches +
+            alpha
+        ) /
+        (
+            n +
+            alpha +
+            beta
+        );
+
+
+    const relative =
+        posterior /
+        baseline;
+
+
+    const score =
+        55 +
+        (
+            relative - 1
+        ) *
+        35;
+
+
+    return Math.max(
+        30,
+        Math.min(
+            90,
+            score
+        )
+    );
 
 }
 
@@ -1791,7 +3108,9 @@ function addFrequencyScores(
 ){
 
     if(!ticks.length){
+
         return;
+
     }
 
 
@@ -1807,9 +3126,7 @@ function addFrequencyScores(
             item.digit <= 9
         ){
 
-            counts[
-                item.digit
-            ]++;
+            counts[item.digit]++;
 
         }
 
@@ -1825,7 +3142,9 @@ function addFrequencyScores(
 
 
     if(!validCount){
+
         return;
+
     }
 
 
@@ -1856,7 +3175,9 @@ function addImprovedRecencyScore(
 ){
 
     if(!ticks.length){
+
         return;
+
     }
 
 
@@ -1878,25 +3199,17 @@ function addImprovedRecencyScore(
             }
 
 
-            /*
-             Quadratic recency weighting.
-
-             Older observations still matter,
-             but newer observations matter more.
-            */
-
             const position =
                 (index + 1) /
                 length;
 
 
             const recency =
-                position * position;
+                position *
+                position;
 
 
-            scores[
-                item.digit
-            ] +=
+            scores[item.digit] +=
                 recency * 3.5;
 
         }
@@ -1906,7 +3219,7 @@ function addImprovedRecencyScore(
 
 
 /* =========================================================
-   IMPROVED TRANSITION SCORES
+   TRANSITION SCORES
 ========================================================= */
 
 function addImprovedTransitionScores(
@@ -1922,11 +3235,6 @@ function addImprovedTransitionScores(
 
     }
 
-
-    /*
-     Only the most relevant recent history is
-     used for transition analysis.
-    */
 
     const transitionTicks =
         ticks.slice(-120);
@@ -1953,11 +3261,6 @@ function addImprovedTransitionScores(
 
     let total = 0;
 
-
-    /*
-     More recent matching transitions receive
-     more weight.
-    */
 
     for(
         let i = 0;
@@ -2000,7 +3303,7 @@ function addImprovedTransitionScores(
             1 /
             (
                 1 +
-                age * 0.08
+                age * .08
             );
 
 
@@ -2015,7 +3318,9 @@ function addImprovedTransitionScores(
 
 
     if(!total){
+
         return;
+
     }
 
 
@@ -2036,7 +3341,7 @@ function addImprovedTransitionScores(
 
 
 /* =========================================================
-   IMPROVED STREAK SCORES
+   STREAK SCORES
 ========================================================= */
 
 function addImprovedStreakScores(
@@ -2101,14 +3406,7 @@ function addImprovedStreakScores(
         streak >= 2
     ){
 
-        /*
-         Streak influence is intentionally
-         capped.
-        */
-
-        scores[
-            streakDigit
-        ] +=
+        scores[streakDigit] +=
             Math.min(
                 streak * 1.5,
                 7
@@ -2166,13 +3464,6 @@ function addWindowAgreementScore(
             longCounts[digit];
 
 
-        /*
-         Compare the three windows.
-
-         A digit gets a small bonus when it is
-         consistently represented across windows.
-        */
-
         const minimum =
             Math.min(
                 shortRate,
@@ -2205,7 +3496,75 @@ function addWindowAgreementScore(
 
 
 /* =========================================================
-   DIGIT DISTRIBUTION HELPER
+   DISTRIBUTION STABILITY
+========================================================= */
+
+function addDistributionStabilityScore(
+    scores,
+    shortTicks,
+    mediumTicks,
+    longTicks
+){
+
+    const short =
+        getDigitDistribution(
+            shortTicks
+        );
+
+
+    const medium =
+        getDigitDistribution(
+            mediumTicks
+        );
+
+
+    const long =
+        getDigitDistribution(
+            longTicks
+        );
+
+
+    for(
+        let digit = 0;
+        digit < 10;
+        digit++
+    ){
+
+        const distance =
+            (
+                Math.abs(
+                    short[digit] -
+                    medium[digit]
+                ) +
+
+                Math.abs(
+                    medium[digit] -
+                    long[digit]
+                )
+            ) / 2;
+
+
+        const stability =
+            Math.max(
+                0,
+                1 -
+                Math.min(
+                    1,
+                    distance * 5
+                )
+            );
+
+
+        scores[digit] +=
+            stability * 2.5;
+
+    }
+
+}
+
+
+/* =========================================================
+   DIGIT DISTRIBUTION
 ========================================================= */
 
 function getDigitDistribution(ticks){
@@ -2225,9 +3584,7 @@ function getDigitDistribution(ticks){
             item.digit <= 9
         ){
 
-            counts[
-                item.digit
-            ]++;
+            counts[item.digit]++;
 
             total++;
 
@@ -2292,14 +3649,6 @@ function calculateSignalAgreement(
         long[predictedDigit] || 0;
 
 
-    /*
-     Compare the predicted digit's relative
-     strength in each window.
-
-     0 = weak agreement
-     1 = strong agreement
-    */
-
     const average =
         (
             shortRate +
@@ -2340,11 +3689,378 @@ function calculateSignalAgreement(
 
 
     return (
-        consistency *
-        0.65 +
-        strength *
-        0.35
+        consistency * .65 +
+        strength * .35
     );
+
+}
+
+
+/* =========================================================
+   TOP SEPARATION
+========================================================= */
+
+function calculateTopSeparation(ranked){
+
+    if(
+        !ranked ||
+        ranked.length < 2
+    ){
+
+        return 0;
+
+    }
+
+
+    const top =
+        Number(
+            ranked[0].score
+        ) || 0;
+
+
+    const second =
+        Number(
+            ranked[1].score
+        ) || 0;
+
+
+    return Math.max(
+        0,
+        Math.min(
+            1,
+            (top - second) / 8
+        )
+    );
+
+}
+
+
+/* =========================================================
+   SAMPLE QUALITY
+========================================================= */
+
+function calculateSampleQuality(sample){
+
+    return Math.min(
+        1,
+        Math.max(
+            0,
+            sample /
+            CONFIG.longWindow
+        )
+    );
+
+}
+
+
+/* =========================================================
+   ENTROPY / UNCERTAINTY
+========================================================= */
+
+function calculateEntropy(ticks){
+
+    const distribution =
+        getDigitDistribution(
+            ticks
+        );
+
+
+    let entropy = 0;
+
+
+    distribution.forEach(
+        probability => {
+
+            if(
+                probability > 0
+            ){
+
+                entropy -=
+                    probability *
+                    Math.log2(
+                        probability
+                    );
+
+            }
+
+        }
+    );
+
+
+    const maximum =
+        Math.log2(10);
+
+
+    return Math.max(
+        0,
+        Math.min(
+            1,
+            1 -
+            entropy /
+            maximum
+        )
+    );
+
+}
+
+
+/* =========================================================
+   MARKET STABILITY
+========================================================= */
+
+function calculateMarketStability(
+    shortTicks,
+    mediumTicks,
+    longTicks
+){
+
+    const short =
+        getDigitDistribution(
+            shortTicks
+        );
+
+
+    const medium =
+        getDigitDistribution(
+            mediumTicks
+        );
+
+
+    const long =
+        getDigitDistribution(
+            longTicks
+        );
+
+
+    let difference = 0;
+
+
+    for(
+        let digit = 0;
+        digit < 10;
+        digit++
+    ){
+
+        difference +=
+            Math.abs(
+                short[digit] -
+                medium[digit]
+            );
+
+
+        difference +=
+            Math.abs(
+                medium[digit] -
+                long[digit]
+            );
+
+    }
+
+
+    difference /= 2;
+
+
+    return Math.max(
+        0,
+        Math.min(
+            1,
+            1 -
+            difference
+        )
+    );
+
+}
+
+
+/* =========================================================
+   DIGIT CONSENSUS
+========================================================= */
+
+function calculateDigitConsensus(
+    shortTicks,
+    mediumTicks,
+    longTicks,
+    predictedDigit
+){
+
+    const short =
+        getDigitDistribution(
+            shortTicks
+        );
+
+
+    const medium =
+        getDigitDistribution(
+            mediumTicks
+        );
+
+
+    const long =
+        getDigitDistribution(
+            longTicks
+        );
+
+
+    const values = [
+
+        short[predictedDigit] || 0,
+
+        medium[predictedDigit] || 0,
+
+        long[predictedDigit] || 0
+
+    ];
+
+
+    const average =
+        values.reduce(
+            (a,b) =>
+                a + b,
+            0
+        ) / 3;
+
+
+    const spread =
+        Math.max(
+            ...values
+        ) -
+        Math.min(
+            ...values
+        );
+
+
+    const consistency =
+        Math.max(
+            0,
+            1 -
+            Math.min(
+                1,
+                spread * 8
+            )
+        );
+
+
+    const strength =
+        Math.min(
+            1,
+            average * 10
+        );
+
+
+    return (
+        consistency * .55 +
+        strength * .45
+    );
+
+}
+
+
+/* =========================================================
+   DATA QUALITY
+========================================================= */
+
+function calculateDataQuality(data){
+
+    if(!data.lastTickTime){
+
+        return 0;
+
+    }
+
+
+    const age =
+        Date.now() -
+        data.lastTickTime;
+
+
+    return Math.max(
+        0,
+        Math.min(
+            1,
+            1 -
+            age / 10000
+        )
+    );
+
+}
+
+
+/* =========================================================
+   BACKGROUND CONFIDENCE ENGINE
+========================================================= */
+
+function calculateBackgroundConfidence(metrics){
+
+    const raw =
+        metrics.agreement * .20 +
+
+        metrics.entropy * .10 +
+
+        metrics.stability * .12 +
+
+        metrics.separation * .18 +
+
+        metrics.sampleQuality * .12 +
+
+        metrics.consensus * .20 +
+
+        metrics.dataQuality * .08;
+
+
+    const confidence =
+        Math.round(
+            30 +
+            raw * 60
+        );
+
+
+    return Math.max(
+        30,
+        Math.min(
+            90,
+            confidence
+        )
+    );
+
+}
+
+
+/* =========================================================
+   CONFIDENCE GATE LEVEL
+========================================================= */
+
+function getConfidenceGateLevel(
+    confidence
+){
+
+    if(
+        confidence >= 75
+    ){
+
+        return "HIGH";
+
+    }
+
+
+    if(
+        confidence >= 62
+    ){
+
+        return "MODERATE";
+
+    }
+
+
+    if(
+        confidence >= 48
+    ){
+
+        return "LOW";
+
+    }
+
+
+    return "WEAK";
 
 }
 
@@ -2408,13 +4124,10 @@ function normalizeScores(scores){
         raw
         .map(
             (value,index) => ({
-
                 index:index,
-
                 fraction:
                     value -
                     Math.floor(value)
-
             })
         )
         .sort(
@@ -2449,121 +4162,15 @@ function normalizeScores(scores){
 
 
 /* =========================================================
-   IMPROVED CONFIDENCE
-========================================================= */
-
-function calculateImprovedConfidence(
-    ranked,
-    sample,
-    agreement
-){
-
-    if(
-        !ranked ||
-        ranked.length < 2
-    ){
-
-        return 0;
-
-    }
-
-
-    const top =
-        Number(
-            ranked[0].score
-        ) || 0;
-
-
-    const second =
-        Number(
-            ranked[1].score
-        ) || 0;
-
-
-    const separation =
-        Math.max(
-            0,
-            top - second
-        );
-
-
-    /*
-     Sample quality.
-
-     20 ticks is enough to begin analysis,
-     but confidence grows as more history
-     becomes available.
-    */
-
-    const sampleFactor =
-        Math.min(
-            sample / CONFIG.longWindow,
-            1
-        );
-
-
-    /*
-     Convert top-vs-second separation into
-     a bounded signal-strength component.
-    */
-
-    const separationFactor =
-        Math.min(
-            1,
-            separation / 8
-        );
-
-
-    /*
-     Combine the three components.
-
-     This produces a measured analytical
-     confidence rather than a guaranteed
-     probability of the next tick.
-    */
-
-    const quality =
-        (
-            sampleFactor * 0.35 +
-            separationFactor * 0.35 +
-            agreement * 0.30
-        );
-
-
-    /*
-     Keep the displayed confidence conservative.
-    */
-
-    let confidence =
-        30 +
-        quality * 60;
-
-
-    confidence =
-        Math.round(
-            Math.max(
-                0,
-                Math.min(
-                    90,
-                    confidence
-                )
-            )
-        );
-
-
-    return confidence;
-
-}
-
-
-/* =========================================================
    RENDER CARDS
 ========================================================= */
 
 function renderCards(){
 
     if(!markets.length){
+
         return;
+
     }
 
 
@@ -2579,7 +4186,9 @@ function renderCards(){
 
 
                 if(!data){
+
                     return "";
+
                 }
 
 
@@ -2601,14 +4210,20 @@ function renderCards(){
 
                 const matches =
                     analysis
-                    ? analysis.matches
+                    ? analysis.historicalMatchRate
                     : null;
 
 
                 const differs =
                     analysis
-                    ? analysis.differs
+                    ? analysis.historicalDiffersRate
                     : null;
+
+
+                const historicalEvaluated =
+                    analysis
+                    ? analysis.historicalEvaluated
+                    : 0;
 
 
                 const color =
@@ -2628,18 +4243,64 @@ function renderCards(){
                     analysis;
 
 
-                const timer =
-                    locked
-                    ? Math.max(
-                        0,
-                        data.nextAnalysis
-                    )
-                    : 0;
+                let timer = 0;
+
+                if(locked){
+
+                    timer =
+                        Math.max(
+                            0,
+                            Math.ceil(
+                                (
+                                    data.cycleEndsAt -
+                                    Date.now()
+                                ) / 1000
+                            )
+                        );
+
+                }
+
+
+                let observedText =
+                    "Not evaluated";
+
+
+                let observedClass =
+                    "observed-none";
+
+
+                if(
+                    data.lastValidation
+                ){
+
+                    if(
+                        data.lastValidation.match
+                    ){
+
+                        observedText =
+                            "✓ MATCH";
+
+                        observedClass =
+                            "observed-match";
+
+                    }else{
+
+                        observedText =
+                            "✕ DIFFER";
+
+                        observedClass =
+                            "observed-differ";
+
+                    }
+
+                }
 
 
                 return `
 
-                <div class="card">
+                <div
+                    class="card"
+                    data-market="${escapeHTML(data.symbol)}">
 
                     <div class="market-title">
 
@@ -2662,15 +4323,23 @@ function renderCards(){
                         ">
 
                             <span class="lock-icon">
-                                ${locked ? "🔒" : "⏳"}
+
+                                ${
+                                    locked
+                                    ? "🔒"
+                                    : "⏳"
+                                }
+
                             </span>
 
                             <span>
+
                                 ${
                                     locked
                                     ? "PREDICTION LOCKED"
                                     : "COLLECTING DATA"
                                 }
+
                             </span>
 
                         </div>
@@ -2713,10 +4382,12 @@ function renderCards(){
                             </span>
 
 
-                            <span class="
-                                timer
-                                ${timer <= 0 ? "refreshing" : ""}
-                            ">
+                            <span
+                                class="
+                                    timer
+                                    ${timer <= 0 ? "refreshing" : ""}
+                                "
+                                data-timer-symbol="${escapeHTML(data.symbol)}">
 
                                 ${
                                     locked
@@ -2740,11 +4411,13 @@ function renderCards(){
                             </span>
 
                             <b class="locked-digit">
+
                                 ${
                                     analysis
                                     ? predicted
                                     : "Waiting"
                                 }
+
                             </b>
 
                         </div>
@@ -2757,11 +4430,13 @@ function renderCards(){
                             </span>
 
                             <b class="confidence">
+
                                 ${
                                     analysis
                                     ? confidence + "%"
                                     : "Waiting"
                                 }
+
                             </b>
 
                         </div>
@@ -2774,11 +4449,28 @@ function renderCards(){
                             </span>
 
                             <b class="live-digit">
+
                                 ${
                                     data.lastDigit === null
                                     ? "—"
                                     : data.lastDigit
                                 }
+
+                            </b>
+
+                        </div>
+
+
+                        <div class="info-row">
+
+                            <span>
+                                Observed result
+                            </span>
+
+                            <b class="${observedClass}">
+
+                                ${observedText}
+
                             </b>
 
                         </div>
@@ -2800,17 +4492,50 @@ function renderCards(){
                         <div class="info-row">
 
                             <span>
+                                Historical tests
+                            </span>
+
+                            <b>
+
+                                ${
+                                    analysis &&
+                                    historicalEvaluated >= 10
+                                    ? historicalEvaluated
+                                    : "Calibrating"
+                                }
+
+                            </b>
+
+                        </div>
+
+
+                        <div class="info-row">
+
+                            <span>
                                 Prediction state
                             </span>
 
                             <b>
+
                                 ${
                                     locked
                                     ? "LOCKED"
                                     : "WAITING"
                                 }
+
                             </b>
 
+                        </div>
+
+                    </div>
+
+
+                    <div class="progress">
+
+                        <div
+                            style="
+                                width:${confidence}%;
+                            ">
                         </div>
 
                     </div>
@@ -2825,11 +4550,15 @@ function renderCards(){
                             </small>
 
                             <b>
+
                                 ${
-                                    analysis
-                                    ? matches + "%"
-                                    : "—"
+                                    !analysis
+                                    ? "—"
+                                    : matches === null
+                                    ? "CALIBRATING"
+                                    : matches + "%"
                                 }
+
                             </b>
 
                         </div>
@@ -2842,11 +4571,15 @@ function renderCards(){
                             </small>
 
                             <b>
+
                                 ${
-                                    analysis
-                                    ? differs + "%"
-                                    : "—"
+                                    !analysis
+                                    ? "—"
+                                    : differs === null
+                                    ? "CALIBRATING"
+                                    : differs + "%"
                                 }
+
                             </b>
 
                         </div>
@@ -2859,11 +4592,13 @@ function renderCards(){
                             </small>
 
                             <b>
+
                                 ${
                                     analysis
                                     ? analysis.evenPercent + "%"
                                     : "—"
                                 }
+
                             </b>
 
                         </div>
@@ -2876,11 +4611,13 @@ function renderCards(){
                             </small>
 
                             <b>
+
                                 ${
                                     analysis
                                     ? analysis.oddPercent + "%"
                                     : "—"
                                 }
+
                             </b>
 
                         </div>
@@ -2893,11 +4630,13 @@ function renderCards(){
                             </small>
 
                             <b>
+
                                 ${
                                     analysis
                                     ? analysis.overPercent + "%"
                                     : "—"
                                 }
+
                             </b>
 
                         </div>
@@ -2910,11 +4649,13 @@ function renderCards(){
                             </small>
 
                             <b>
+
                                 ${
                                     analysis
                                     ? analysis.underPercent + "%"
                                     : "—"
                                 }
+
                             </b>
 
                         </div>
@@ -2927,6 +4668,7 @@ function renderCards(){
                             </small>
 
                             <b>
+
                                 ${
                                     data.lastPrice === null
                                     ? "—"
@@ -2936,6 +4678,7 @@ function renderCards(){
                                         data.pipSize || 2
                                     )
                                 }
+
                             </b>
 
                         </div>
@@ -2948,12 +4691,14 @@ function renderCards(){
                             </small>
 
                             <b>
+
                                 ${
                                     analysis
                                     ? "#" +
                                       analysis.ranked[0].digit
                                     : "—"
                                 }
+
                             </b>
 
                         </div>
@@ -2966,11 +4711,13 @@ function renderCards(){
                             </small>
 
                             <b>
+
                                 ${
                                     analysis
                                     ? analysis.sample
                                     : "—"
                                 }
+
                             </b>
 
                         </div>
@@ -3014,15 +4761,24 @@ function renderCards(){
                     <div class="analysis-footer">
 
                         <span>
-                            Live ticks
+
+                            ${
+                                analysis
+                                ? "Gate: " +
+                                  analysis.gateLevel
+                                : "Analysis"
+                            }
+
                         </span>
+
 
                         <span>
 
                             ${
-                                locked
-                                ? "Prediction locked"
-                                : "Collecting data"
+                                analysis &&
+                                analysis.historicalEvaluated >= 10
+                                ? "Walk-forward validated"
+                                : "Historical calibration"
                             }
 
                         </span>
@@ -3041,22 +4797,99 @@ function renderCards(){
 
 
 /* =========================================================
+   LIGHTWEIGHT TIMER UPDATE
+========================================================= */
+
+function updateVisibleTimers(){
+
+    Object.values(
+        marketData
+    ).forEach(
+        data => {
+
+            const timerElement =
+                document.querySelector(
+                    `[data-timer-symbol="${CSS.escape(data.symbol)}"]`
+                );
+
+
+            if(!timerElement){
+
+                return;
+
+            }
+
+
+            if(
+                data.predictionLocked
+            ){
+
+                const remaining =
+                    Math.max(
+                        0,
+                        Math.ceil(
+                            (
+                                data.cycleEndsAt -
+                                Date.now()
+                            ) / 1000
+                        )
+                    );
+
+
+                timerElement.textContent =
+                    remaining + "s";
+
+
+                timerElement.classList.toggle(
+                    "refreshing",
+                    remaining <= 0
+                );
+
+
+                return;
+
+            }
+
+
+            timerElement.textContent =
+                "WAIT";
+
+            timerElement.classList.add(
+                "refreshing"
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
    DIGIT COLOR
 ========================================================= */
 
 function getColor(digit){
 
     if(digit <= 2){
+
         return "green";
+
     }
+
 
     if(digit <= 5){
+
         return "blue";
+
     }
 
+
     if(digit <= 7){
+
         return "purple";
+
     }
+
 
     return "orange";
 
@@ -3118,7 +4951,9 @@ function scheduleReconnect(){
                 }
 
             },
+
             CONFIG.reconnectDelay
+
         );
 
 }
@@ -3161,146 +4996,159 @@ function escapeHTML(value){
 
 
 /* =========================================================
-   EXACT ONE-SECOND COUNTDOWN ENGINE
+   ACCURATE 20-SECOND CYCLE ENGINE
 ========================================================= */
 
-/*
-   The prediction still expires from the exact
-   cycleEndsAt timestamp.
+function runCasperPredictionCycle(){
 
-   The display is refreshed frequently so the
-   visible value moves cleanly:
-
-   20
-   19
-   18
-   17
-   ...
-   2
-   1
-   0
-   20
-
-   The prediction itself remains locked until
-   the exact expiration timestamp.
-*/
-
-setInterval(
-    () => {
-
-        const now =
-            Date.now();
+    const now =
+        Date.now();
 
 
-        Object
-        .values(marketData)
-        .forEach(
-            data => {
+    Object
+    .values(marketData)
+    .forEach(
+        data => {
 
-                /*
-                 First prediction.
-                */
 
-                if(
-                    data.ticks.length >=
-                    CONFIG.minimumTicks &&
-                    !data.predictionLocked
-                ){
+            /* =========================================
+               STATE 1 — INITIAL PREDICTION
+            ========================================= */
 
+            if(
+                data.ticks.length >=
+                CONFIG.minimumTicks &&
+
+                !data.predictionLocked &&
+
+                !data.pendingValidation
+            ){
+
+                const created =
                     createNewPrediction(
                         data
                     );
+
+
+                if(created){
+
+                    renderCards();
+
+                    console.log(
+                        "CASPER FX CYCLE START:",
+                        data.symbol,
+                        "20 seconds"
+                    );
+
+                }
+
+
+                return;
+
+            }
+
+
+            /* =========================================
+               STATE 2 — ACTIVE 20 SECOND CYCLE
+            ========================================= */
+
+            if(
+                data.predictionLocked
+            ){
+
+                if(
+                    now <
+                    data.cycleEndsAt
+                ){
 
                     return;
 
                 }
 
 
-                /*
-                 Locked prediction countdown.
-                */
+                data.predictionLocked =
+                    false;
+
+
+                data.cycleExpired =
+                    true;
+
 
                 if(
-                    data.predictionLocked
+                    data.pendingValidation
                 ){
 
-                    const remainingMs =
-                        Math.max(
-                            0,
-                            data.cycleEndsAt -
-                            now
+                    return;
+
+                }
+
+            }
+
+
+            /* =========================================
+               STATE 3 — START NEXT CYCLE
+            ========================================= */
+
+            if(
+                data.cycleExpired
+            ){
+
+                if(
+                    data.pendingValidation
+                ){
+
+                    return;
+
+                }
+
+
+                data.cycleExpired =
+                    false;
+
+
+                if(
+                    data.ticks.length >=
+                    CONFIG.minimumTicks
+                ){
+
+                    const created =
+                        createNewPrediction(
+                            data
                         );
 
 
-                    /*
-                     CEIL gives the exact visible
-                     second sequence.
+                    if(created){
 
-                     20 → 19 → 18 → ... → 1 → 0
-                    */
+                        renderCards();
 
-                    const remainingSeconds =
-                        Math.ceil(
-                            remainingMs / 1000
+                        console.log(
+                            "CASPER FX NEXT CYCLE:",
+                            data.symbol,
+                            "20 seconds"
                         );
-
-
-                    data.nextAnalysis =
-                        remainingSeconds;
-
-
-                    /*
-                     Exact expiration.
-                    */
-
-                    if(
-                        remainingMs <= 0
-                    ){
-
-                        data.predictionLocked =
-                            false;
-
-
-                        data.nextAnalysis =
-                            0;
-
-
-                        if(
-                            data.ticks.length >=
-                            CONFIG.minimumTicks
-                        ){
-
-                            createNewPrediction(
-                                data
-                            );
-
-                        }
 
                     }
 
                 }
 
             }
-        );
-
-
-        if(markets.length){
-
-            renderCards();
 
         }
+    );
 
-    },
 
-    /*
-     Refresh often enough to ensure the
-     one-second display never depends on
-     browser rendering happening exactly
-     once per second.
-    */
+    updateVisibleTimers();
 
-    100
+}
 
+
+/* =========================================================
+   TIMER REFRESH LOOP
+========================================================= */
+
+setInterval(
+    runCasperPredictionCycle,
+    50
 );
 
 
@@ -3312,6 +5160,8 @@ setStatus(
     false,
     "Disconnected"
 );
+
+updateValidationPanel();
 
 </script>
 
